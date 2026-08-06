@@ -1,0 +1,1 @@
+import Link from 'next/link'; export default function Cancel(){return <section className="result"><h1>Checkout cancelled.</h1><p>No payment was completed. Your cart remains available.</p><Link className="primary" href="/shop#cart">Return to cart</Link></section>}

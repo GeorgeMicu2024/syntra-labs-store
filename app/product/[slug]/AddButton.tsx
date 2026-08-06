@@ -1,0 +1,1 @@
+'use client'; import type { Product } from '@/lib/products'; import { useCart } from '@/components/CartProvider'; export default function AddButton({product}:{product:Product}){const {add}=useCart();return <button className="primary wide" onClick={()=>add(product)}>Add to cart</button>}

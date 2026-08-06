@@ -1,0 +1,1 @@
+import Link from 'next/link'; export default function Success(){return <section className="result"><h1>Payment received.</h1><p>Your checkout was completed successfully. Keep your confirmation email for your records.</p><Link className="primary" href="/shop">Return to shop</Link></section>}
