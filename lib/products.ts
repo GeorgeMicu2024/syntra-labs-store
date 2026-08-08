@@ -443,7 +443,7 @@ export const products: Product[] = [
     strength: "3 ml",
     category: "Lab Supplies",
 
-    price: 12,
+    price: 1,
     stock: 45,
 
     image: "/products/bac3.png",
