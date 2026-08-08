@@ -2,7 +2,7 @@ import ContactForm from "@/components/ContactForm";
 
 export default function ContactPage() {
   return (
-    <main>
+    <main className="contact-page">
       <div className="contact-details">
         <h1>Contact us</h1>
 
