@@ -275,7 +275,7 @@ export const products: Product[] = [
     strength: "1000 mg",
     category: "Cellular",
 
-    price: 145,
+    price: 120,
     stock: 8,
 
     image: "/products/nad1000.png",
@@ -296,7 +296,7 @@ export const products: Product[] = [
     strength: "5 mg",
     category: "Hormone",
 
-    price: 79,
+    price: 68,
     stock: 12,
 
     image: "/products/tesa5.png",
@@ -317,7 +317,7 @@ export const products: Product[] = [
     strength: "10 mg",
     category: "Metabolic",
 
-    price: 95,
+    price: 85,
     stock: 8,
 
     image: "/products/survo10.png",
@@ -338,7 +338,7 @@ export const products: Product[] = [
     strength: "60 mg",
     category: "Cellular",
 
-    price: 72,
+    price: 62,
     stock: 10,
 
     image: "/products/cere60.png",
@@ -380,7 +380,7 @@ export const products: Product[] = [
     strength: "10 mg",
     category: "Peptide",
 
-    price: 58,
+    price: 48,
     stock: 12,
 
     image: "/products/selank10.png",
@@ -401,7 +401,7 @@ export const products: Product[] = [
     strength: "2000 IU",
     category: "Hormone",
 
-    price: 65,
+    price: 55,
     stock: 10,
 
     image: "/products/hcg2000.png",
@@ -422,7 +422,7 @@ export const products: Product[] = [
     strength: "2 mg",
     category: "Peptide",
 
-    price: 49,
+    price: 39,
     stock: 15,
 
     image: "/products/aod2.png",
