@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 export async function POST(req: Request) {
-  // Check Stripe configuration
+  // Check environment variables
   if (
     !process.env.STRIPE_SECRET_KEY ||
     !process.env.STRIPE_WEBHOOK_SECRET
@@ -17,9 +20,12 @@ export async function POST(req: Request) {
 
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+  // Stripe signature header
   const signature = req.headers.get("stripe-signature");
 
   if (!signature) {
+    console.error("Missing Stripe signature header");
+
     return NextResponse.json(
       { error: "Missing Stripe signature" },
       { status: 400 }
@@ -27,30 +33,52 @@ export async function POST(req: Request) {
   }
 
   try {
-    // IMPORTANT: Stripe requires the raw request body
+    // IMPORTANT:
+    // Stripe signature verification requires the RAW request body.
     const rawBody = await req.text();
 
+    // TEMPORARY DEBUG
+    // Does NOT print the full secret.
+    console.log("WEBHOOK DEBUG", {
+      secretLoaded: !!process.env.STRIPE_WEBHOOK_SECRET,
+      secretPrefix:
+        process.env.STRIPE_WEBHOOK_SECRET?.slice(0, 6),
+      secretLength:
+        process.env.STRIPE_WEBHOOK_SECRET?.length,
+      signatureLoaded: !!signature,
+      signaturePrefix: signature.slice(0, 20),
+      bodyLength: rawBody.length,
+      host: req.headers.get("host"),
+      contentType: req.headers.get("content-type"),
+    });
+
+    // Verify Stripe webhook signature
     const event = stripe.webhooks.constructEvent(
       rawBody,
       signature,
       process.env.STRIPE_WEBHOOK_SECRET
     );
 
-    console.log("Stripe webhook received:", event.type);
+    console.log(
+      "Stripe webhook signature verified:",
+      event.id,
+      event.type
+    );
 
-    // Handle successful Checkout payments
+    // Handle successful Checkout payment
     if (
       event.type === "checkout.session.completed" ||
       event.type === "checkout.session.async_payment_succeeded"
     ) {
-      const session = event.data.object as Stripe.Checkout.Session;
+      const session =
+        event.data.object as Stripe.Checkout.Session;
 
       console.log("Paid checkout:", session.id);
 
-      // Prevent sending confirmation for an unpaid Checkout Session
+      // Do not send confirmation if payment is not paid
       if (session.payment_status !== "paid") {
         console.log(
-          "Checkout session is not paid yet:",
+          "Checkout session not paid:",
           session.id,
           session.payment_status
         );
@@ -58,13 +86,14 @@ export async function POST(req: Request) {
         return NextResponse.json({ received: true });
       }
 
-      // Retrieve complete Checkout Session
-      const checkout = await stripe.checkout.sessions.retrieve(
-        session.id,
-        {
-          expand: ["line_items.data.price.product"],
-        }
-      );
+      // Retrieve complete Checkout Session + products
+      const checkout =
+        await stripe.checkout.sessions.retrieve(
+          session.id,
+          {
+            expand: ["line_items.data.price.product"],
+          }
+        );
 
       // Customer information
       const customerEmail =
@@ -76,14 +105,14 @@ export async function POST(req: Request) {
 
       if (!customerEmail) {
         console.error(
-          "No customer email found for checkout:",
+          "No customer email found:",
           checkout.id
         );
 
         return NextResponse.json({ received: true });
       }
 
-      // Build order items
+      // Build product rows
       const items =
         checkout.line_items?.data
           .map((item) => {
@@ -136,7 +165,8 @@ export async function POST(req: Request) {
       ).toFixed(2);
 
       // Resend configuration
-      const resendApiKey = process.env.RESEND_API_KEY;
+      const resendApiKey =
+        process.env.RESEND_API_KEY;
 
       if (!resendApiKey) {
         console.error(
@@ -172,13 +202,16 @@ export async function POST(req: Request) {
 
             reply_to: supportEmail,
 
-            subject: "Your Syntra Labs order is confirmed",
+            subject:
+              "Your Syntra Labs order is confirmed",
 
             html: `
               <!DOCTYPE html>
+
               <html>
                 <head>
                   <meta charset="UTF-8" />
+
                   <meta
                     name="viewport"
                     content="width=device-width, initial-scale=1.0"
@@ -193,11 +226,8 @@ export async function POST(req: Request) {
                     font-family:Arial,Helvetica,sans-serif;
                   "
                 >
-                  <div
-                    style="
-                      padding:30px 15px;
-                    "
-                  >
+
+                  <div style="padding:30px 15px;">
 
                     <div
                       style="
@@ -286,8 +316,9 @@ export async function POST(req: Request) {
                         </p>
 
                         <p>
-                          Your payment has been received successfully
-                          and your Syntra Labs order is now confirmed.
+                          Your payment has been received
+                          successfully and your Syntra Labs
+                          order is now confirmed.
                         </p>
 
                         <!-- ORDER REFERENCE -->
@@ -301,6 +332,7 @@ export async function POST(req: Request) {
                             margin:25px 0;
                           "
                         >
+
                           <div
                             style="
                               font-size:12px;
@@ -323,9 +355,10 @@ export async function POST(req: Request) {
                           >
                             ${escapeHtml(checkout.id)}
                           </div>
+
                         </div>
 
-                        <!-- ORDER ITEMS -->
+                        <!-- ORDER SUMMARY -->
 
                         <h2
                           style="
@@ -347,6 +380,7 @@ export async function POST(req: Request) {
                         >
 
                           <thead>
+
                             <tr>
 
                               <th
@@ -386,6 +420,7 @@ export async function POST(req: Request) {
                               </th>
 
                             </tr>
+
                           </thead>
 
                           <tbody>
@@ -432,16 +467,17 @@ export async function POST(req: Request) {
                           </p>
 
                           <p style="margin-top:0;">
-                            If we require any additional information,
-                            our support team will contact you.
+                            If we require any additional
+                            information, our support team will
+                            contact you.
                           </p>
 
                         </div>
 
                         <p style="margin-top:30px;">
-                          Need help with your order? Simply reply to
-                          this email and our support team will assist
-                          you.
+                          Need help with your order?
+                          Simply reply to this email and our
+                          support team will assist you.
                         </p>
 
                         <p style="margin-top:30px;">
@@ -492,6 +528,7 @@ export async function POST(req: Request) {
                     </div>
 
                   </div>
+
                 </body>
               </html>
             `,
@@ -501,7 +538,8 @@ export async function POST(req: Request) {
 
       // Check Resend response
       if (!emailResponse.ok) {
-        const errorText = await emailResponse.text();
+        const errorText =
+          await emailResponse.text();
 
         console.error(
           "Order confirmation email failed:",
@@ -509,7 +547,8 @@ export async function POST(req: Request) {
           errorText
         );
       } else {
-        const emailResult = await emailResponse.json();
+        const emailResult =
+          await emailResponse.json();
 
         console.log(
           "Order confirmation sent:",
@@ -519,9 +558,15 @@ export async function POST(req: Request) {
       }
     }
 
-    return NextResponse.json({ received: true });
+    return NextResponse.json({
+      received: true,
+    });
+
   } catch (error) {
-    console.error("Stripe webhook error:", error);
+    console.error(
+      "Stripe webhook verification FAILED:",
+      error
+    );
 
     return NextResponse.json(
       {
@@ -530,12 +575,14 @@ export async function POST(req: Request) {
             ? error.message
             : "Invalid webhook",
       },
-      { status: 400 }
+      {
+        status: 400,
+      }
     );
   }
 }
 
-// Prevent customer-controlled data from injecting HTML into the email
+// Escape customer-controlled values used inside HTML
 function escapeHtml(value: string) {
   return value.replace(
     /[&<>'"]/g,
