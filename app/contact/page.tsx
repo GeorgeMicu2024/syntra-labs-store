@@ -1,4 +1,31 @@
 import ContactForm from "@/components/ContactForm";
-import { siteConfig } from "@/lib/site";
-export const metadata={title:"Contact"};
-export default function Contact(){return <main className="content-page contact-page"><section className="page-intro"><p className="eyebrow">Direct support</p><h1>How can we help?</h1><p>Send a message for catalogue, order, delivery or business enquiries. Messages are delivered directly to the Syntra Labs support inbox.</p></section><div className="contact-layout"><ContactForm/><aside className="contact-aside"><article><span>EMAIL</span><a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a></article><article><span>RESPONSE TIME</span><strong>Within 1 business day</strong></article><article><span>SUPPORT HOURS</span><strong>Monday–Friday<br/>09:00–17:00 UK</strong></article><article><span>ORDER SUPPORT</span><p>Include your order reference to help us resolve your enquiry faster.</p></article></aside></div></main>}
+
+export default function ContactPage() {
+  return (
+    <main>
+      <div className="contact-details">
+        <h1>Contact us</h1>
+
+        <p>
+          <strong>Email:</strong>{" "}
+          <a href="mailto:support@syntralabs.co.uk">
+            support@syntralabs.co.uk
+          </a>
+        </p>
+
+        <p>
+          <strong>Phone / WhatsApp:</strong>{" "}
+          <a href="tel:+447490544199">
+            +44 7490 544199
+          </a>
+        </p>
+
+        <p>
+          <strong>Support hours:</strong> Monday–Friday, 09:00–17:00 UK
+        </p>
+      </div>
+
+      <ContactForm />
+    </main>
+  );
+}
