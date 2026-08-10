@@ -4,6 +4,9 @@ import CategoryExplorer from "@/components/CategoryExplorer";
 import HomeResearch from "@/components/HomeResearch";
 import StandardsShowcase from "@/components/StandardsShowcase";
 import ReturnVisitPrompt from "@/components/ReturnVisitPrompt";
+import CatalogueIntelligence from "@/components/CatalogueIntelligence";
+import RecentlyViewed from "@/components/RecentlyViewed";
+import MembershipSection from "@/components/MembershipSection";
 import { getProducts } from "@/lib/supabase-rest";
 import { hasDiscount, getStockState } from "@/lib/commerce";
 
@@ -18,24 +21,25 @@ export default async function Home() {
   }).length;
 
   return (
-    <div className="premium-home v6-home">
+    <div className="premium-home v6-home v7-home">
       <ParallaxHero
         catalogueCount={products.length}
         inStockCount={products.filter((product) => product.stock > 0).length}
         categoryCount={new Set(products.map((product) => product.category)).size}
       />
       <ReturnVisitPrompt offerCount={offerCount} lowStockCount={lowStockCount} />
+      <CatalogueIntelligence products={products} />
+      <MembershipSection />
       <HomeFeatured products={products} />
+      <RecentlyViewed products={products} />
       <CategoryExplorer />
       <HomeResearch />
       <StandardsShowcase />
-      <section className="home-final-cta v6-final-cta">
+      <section className="home-final-cta v6-final-cta v7-final-cta">
         <div>
           <span className="kicker">LIVE CATALOGUE · UK</span>
-          <h2>Return for live stock, current offers and new research context.</h2>
-          <p>
-            Catalogue availability changes by batch. Bookmark Syntra Labs to check current stock, offer pricing and evidence-stage research notes.
-          </p>
+          <h2>A research storefront designed to reward a second look.</h2>
+          <p>Return for live stock, current offers, recently viewed materials and evidence-stage research notes. Catalogue availability changes by batch.</p>
         </div>
         <div className="home-final-actions">
           <a href="/offers" className="button-primary">Current offers <span>→</span></a>

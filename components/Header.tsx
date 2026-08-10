@@ -4,6 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useCart } from "./CartProvider";
+import { useAuth } from "./AuthProvider";
+import NotificationBell from "./NotificationBell";
+import { useWishlist } from "./WishlistProvider";
 
 const links = [
   ["/", "Home"],
@@ -16,19 +19,21 @@ const links = [
 ] as const;
 
 const tickerItems = [
-  "UK RESEARCH CATALOGUE",
+  "FREE UK SHIPPING",
+  "ORDER BY 12:00 · SAME-DAY DISPATCH",
+  "20% FIRST REGISTERED ORDER",
+  "10% RETURNING CUSTOMER PRICING",
   "LIVE STOCK & PRICING",
-  "CURRENT CATALOGUE OFFERS",
   "SECURE STRIPE CHECKOUT",
   "RESEARCH USE ONLY",
   "DIRECT UK SUPPORT",
-  "BATCH-BASED AVAILABILITY",
-  "EVIDENCE-ORIENTED PRODUCT NOTES",
 ];
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { count } = useCart();
+  const { user, profile } = useAuth();
+  const { count: wishlistCount } = useWishlist();
   const pathname = usePathname();
 
   function isActive(href: string) {
@@ -40,6 +45,10 @@ export default function Header() {
     setMenuOpen(false);
     window.dispatchEvent(new CustomEvent("syntra:open-cart"));
   }
+
+  const accountLabel = user
+    ? profile?.first_name || user.email?.split("@")[0] || "Account"
+    : "Sign in";
 
   return (
     <>
@@ -71,11 +80,24 @@ export default function Header() {
         </nav>
 
         <div className="header-actions">
-          <Link href="/shop" className="header-search" aria-label="Search catalogue">
+          <button type="button" className="header-search" aria-label="Search catalogue" onClick={() => window.dispatchEvent(new CustomEvent("syntra:open-search"))}>
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <circle cx="11" cy="11" r="7" />
               <path d="m20 20-3.5-3.5" />
             </svg>
+            <span className="v7-search-shortcut">⌘K</span>
+          </button>
+
+          <NotificationBell />
+
+          <Link className={`header-account ${pathname.startsWith("/account") ? "active" : ""}`} href="/account" aria-label="Customer account">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4.5 21a7.5 7.5 0 0 1 15 0" />
+            </svg>
+            <span>{accountLabel}</span>
+            {wishlistCount > 0 && <b className="v10-saved-count" title={`${wishlistCount} saved product${wishlistCount === 1 ? "" : "s"}`}>{wishlistCount}</b>}
+            {user && <i className="account-live-dot" />}
           </Link>
 
           <button type="button" className="header-cart" onClick={openCart} aria-label={`Open cart with ${count} items`}>
@@ -114,10 +136,14 @@ export default function Header() {
                 <b>↗</b>
               </Link>
             ))}
+            <Link href="/account" className={pathname.startsWith("/account") ? "active" : ""} onClick={() => setMenuOpen(false)}>
+              <span>{user ? `Account · ${accountLabel}` : "Register / Sign in"}</span>
+              <b>↗</b>
+            </Link>
           </nav>
           <div className="mobile-nav-footer">
             <strong>SYNTRA LABS</strong>
-            <small>Research catalogue · United Kingdom</small>
+            <small>Free UK shipping · 12:00 dispatch cutoff</small>
           </div>
         </div>
       </header>

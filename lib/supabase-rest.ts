@@ -65,6 +65,9 @@ export async function updateProduct(id: string, input: Partial<Product>) {
       price: input.price,
       stock: input.stock,
       featured: input.featured,
+      compare_at_price: input.compareAtPrice ?? null,
+      badge: input.badge ?? null,
+      highlights: input.highlights ?? [],
       updated_at: new Date().toISOString(),
     }),
   });

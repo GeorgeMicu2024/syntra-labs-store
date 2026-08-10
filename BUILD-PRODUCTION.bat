@@ -1,18 +1,26 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-if not exist node_modules call npm install
+echo.
+echo ==========================================
+echo   SYNTRA LABS V10 PRODUCTION CHECK
+echo ==========================================
+echo.
+call npm install
+if errorlevel 1 goto :error
+echo Running TypeScript check...
 call npm run typecheck
 if errorlevel 1 goto :error
+echo Running Next.js production build...
 call npm run build
 if errorlevel 1 goto :error
 echo.
-echo Production build completed successfully.
+echo Production checks completed successfully.
 pause
 goto :end
 :error
 echo.
-echo Build failed. Review the message above.
+echo Production check failed. Review the message above.
 pause
 :end
 endlocal

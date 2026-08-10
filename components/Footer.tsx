@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-topline">
         <div className="brand footer-brand"><span className="brandmark">SL</span><span className="brand-text">SYNTRA<small>LABS</small></span></div>
-        <p>Research catalogue · Evidence-oriented compound notes · United Kingdom</p>
+        <p>Research catalogue · Free UK shipping · 12:00 weekday dispatch cutoff</p>
       </div>
 
       <div className="footer-grid">
@@ -18,8 +18,8 @@ export default function Footer() {
           </p>
         </div>
         <div><h3>Navigate</h3><Link href="/">Home</Link><Link href="/shop">Catalogue</Link><Link href="/offers">Current offers</Link><Link href="/research">Research library</Link><Link href="/standards">Standards</Link></div>
-        <div><h3>Company</h3><Link href="/about">About</Link><Link href="/contact">Contact</Link><Link href="/shipping">Shipping</Link><Link href="/faq">FAQ</Link></div>
-        <div><h3>Support</h3><a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a><a href="tel:+447490544199">+44 7490 544199</a><p>Monday–Friday<br />09:00–17:00 UK</p></div>
+        <div><h3>Customer</h3><Link href="/account">My account</Link><Link href="/account/register">Create account · 20% first order</Link><Link href="/account/sign-in">Sign in</Link><Link href="/account/forgot-password">Reset password</Link><Link href="/shipping">Shipping</Link><Link href="/faq">FAQ</Link></div>
+        <div><h3>Support</h3><a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a><a href="tel:+447490544199">+44 7490 544199</a><p>Monday–Friday<br />09:00–17:00 UK</p><small>Free UK shipping · order by 12:00 for same-day dispatch scheduling.</small></div>
       </div>
 
       <div className="footer-bottom">

@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import type { Product } from "@/lib/products";
 import { getSavings, getStockState, hasDiscount } from "@/lib/commerce";
 import ProductCard from "./ProductCard";
+import RecentlyViewed from "./RecentlyViewed";
 
 const categories = ["All", "Metabolic", "Peptide", "Cellular", "Hormone", "Lab Supplies"] as const;
 const quickFilters = ["All", "Offers", "In stock", "Limited"] as const;
@@ -120,6 +121,8 @@ export default function ShopClient({ products, initialCategory = "All" }: ShopCl
           </div>
         )}
       </section>
+
+      <RecentlyViewed products={products} compact />
     </>
   );
 }
