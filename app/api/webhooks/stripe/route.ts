@@ -37,21 +37,6 @@ export async function POST(req: Request) {
     // Stripe signature verification requires the RAW request body.
     const rawBody = await req.text();
 
-    // TEMPORARY DEBUG
-    // Does NOT print the full secret.
-    console.log("WEBHOOK DEBUG", {
-      secretLoaded: !!process.env.STRIPE_WEBHOOK_SECRET,
-      secretPrefix:
-        process.env.STRIPE_WEBHOOK_SECRET?.slice(0, 6),
-      secretLength:
-        process.env.STRIPE_WEBHOOK_SECRET?.length,
-      signatureLoaded: !!signature,
-      signaturePrefix: signature.slice(0, 20),
-      bodyLength: rawBody.length,
-      host: req.headers.get("host"),
-      contentType: req.headers.get("content-type"),
-    });
-
     // Verify Stripe webhook signature
     const event = stripe.webhooks.constructEvent(
       rawBody,

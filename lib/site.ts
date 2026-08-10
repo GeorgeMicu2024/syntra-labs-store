@@ -3,7 +3,7 @@ export const siteConfig = {
   url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   email: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "support@syntralabs.co.uk",
   description:
-    "Premium laboratory research materials with clear references, protected handling and UK-focused fulfilment.",
+    "UK laboratory research catalogue with live stock, secure checkout and evidence-oriented compound research notes.",
   currency: "GBP",
   locale: "en_GB",
 };

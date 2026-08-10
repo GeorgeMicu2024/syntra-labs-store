@@ -3,175 +3,111 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/lib/products";
+import { displayProductName } from "@/lib/display";
+import { getResearchProfile } from "@/lib/research";
+import {
+  getAvailabilityMessage,
+  getCommerceHighlights,
+  getPrimaryBadge,
+  getSavings,
+  getStockLabel,
+  getStockState,
+  hasDiscount,
+} from "@/lib/commerce";
 import { useCart } from "./CartProvider";
 
-export default function ProductCard({
-  product,
-}: {
-  product: Product;
-}) {
+export default function ProductCard({ product }: { product: Product }) {
   const { add } = useCart();
-
-  const outOfStock = product.stock <= 0;
-  const lowStock = product.stock > 0 && product.stock <= 5;
+  const unavailable = product.stock <= 0;
+  const research = getResearchProfile(product.id);
+  const name = displayProductName(product.name);
+  const savings = getSavings(product);
+  const stockState = getStockState(product.stock);
+  const highlights = getCommerceHighlights(product).slice(0, 3);
 
   function addToCart() {
-    if (outOfStock) return;
-
+    if (unavailable) return;
     add(product);
-
-    // Open cart automatically after adding a product
-    window.dispatchEvent(
-      new CustomEvent("syntra:open-cart")
-    );
+    window.dispatchEvent(new CustomEvent("syntra:open-cart"));
   }
 
   return (
-    <article className="product-card product-card-modern">
-
-      {/* PRODUCT IMAGE */}
-
-      <Link
-        href={`/product/${product.slug}`}
-        className="product-image product-image-modern"
-      >
-        <div className="product-card-badges">
-          <span className="research-badge">
-            RESEARCH USE ONLY
-          </span>
-
-          {product.featured && (
-            <span className="featured-badge">
-              FEATURED
-            </span>
-          )}
+    <article className={`v6-product-card ${hasDiscount(product) ? "is-offer" : ""}`}>
+      <Link href={`/product/${product.slug}`} className="v6-product-visual">
+        <div className="v6-card-topline">
+          <span className="v6-card-class">{product.category.toUpperCase()}</span>
+          <span className={`v6-stock-chip ${stockState}`}><i />{getStockLabel(product.stock)}</span>
         </div>
+
+        {hasDiscount(product) && (
+          <span className="v6-offer-ribbon">{getPrimaryBadge(product)}</span>
+        )}
 
         <Image
           src={product.image}
-          alt={`${product.name} ${product.strength}`}
-          width={900}
-          height={900}
-          className="product-card-image"
+          alt={`${name} ${product.strength}`}
+          width={720}
+          height={720}
+          className="v6-product-image"
         />
 
-        <div className="product-image-glow" />
+        <div className="v6-image-footer">
+          <span>SL-{product.code}</span>
+          <span>RESEARCH USE ONLY</span>
+        </div>
       </Link>
 
-      {/* PRODUCT INFORMATION */}
-
-      <div className="product-body product-body-modern">
-
-        <div className="product-card-topline">
-          <span className="product-category">
-            {product.category}
-          </span>
-
-          <span className="product-code">
-            {product.code}
-          </span>
+      <div className="v6-product-body">
+        <div className="v6-product-heading">
+          <div>
+            <h3><Link href={`/product/${product.slug}`}>{name}</Link></h3>
+            <span>{product.strength}</span>
+          </div>
+          {research && <small>{research.tier}</small>}
         </div>
 
-        <Link
-          href={`/product/${product.slug}`}
-          className="product-title-link"
-        >
-          <h3>{product.name}</h3>
-        </Link>
+        <p className="v6-product-description">{research?.researchClass || product.short}</p>
 
-        <div className="product-strength">
-          {product.strength}
+        <div className="v6-highlight-grid">
+          {highlights.map((item, index) => (
+            <span key={item}><i>{index + 1}</i>{item}</span>
+          ))}
         </div>
 
-        <p className="product-description">
-          {product.short}
-        </p>
-
-        {/* PRICE + STOCK */}
-
-        <div className="product-purchase-info">
-          <div className="product-price">
-            <small>PRICE</small>
-
-            <strong>
-              £{product.price.toFixed(2)}
-            </strong>
+        <div className="v6-price-zone">
+          <div className="v6-price-main">
+            <small>{hasDiscount(product) ? "CURRENT OFFER" : "CATALOGUE PRICE"}</small>
+            <div>
+              <strong>£{product.price.toFixed(2)}</strong>
+              {hasDiscount(product) && product.compareAtPrice && (
+                <del>£{product.compareAtPrice.toFixed(2)}</del>
+              )}
+            </div>
           </div>
 
-          <div
-            className={`product-stock ${
-              outOfStock
-                ? "out"
-                : lowStock
-                  ? "low"
-                  : "available"
-            }`}
-          >
-            <span />
-
-            {outOfStock
-              ? "Out of stock"
-              : lowStock
-                ? "Low stock"
-                : "In stock"}
-          </div>
+          {savings && (
+            <div className="v6-save-block">
+              <span>SAVE</span>
+              <strong>£{savings.amount.toFixed(2)}</strong>
+              <small>{savings.percent}% OFF</small>
+            </div>
+          )}
         </div>
 
-        {/* ACTIONS */}
+        <div className={`v6-live-bar ${stockState}`}>
+          <span><i />{getStockLabel(product.stock)}</span>
+          <small>{getAvailabilityMessage(product.stock)}</small>
+        </div>
 
-        <div className="product-card-actions">
-          <button
-            type="button"
-            className="product-add-button"
-            disabled={outOfStock}
-            onClick={addToCart}
-          >
-            {outOfStock ? (
-              "Out of stock"
-            ) : (
-              <>
-                <span>Add to cart</span>
-
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="M5 12h14" />
-                  <path d="m13 6 6 6-6 6" />
-                </svg>
-              </>
-            )}
-          </button>
-
-          <Link
-            href={`/product/${product.slug}`}
-            className="product-view-button"
-            aria-label={`View ${product.name}`}
-          >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z" />
-              <circle cx="12" cy="12" r="3" />
-            </svg>
+        <div className="v6-card-actions">
+          <Link href={`/product/${product.slug}`} className="v6-view-details">
+            View details <span>↗</span>
           </Link>
+          <button type="button" disabled={unavailable} onClick={addToCart}>
+            {unavailable ? "Out of stock" : "Add to basket"}
+            {!unavailable && <span>＋</span>}
+          </button>
         </div>
-
       </div>
     </article>
   );

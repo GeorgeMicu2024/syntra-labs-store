@@ -1,66 +1,36 @@
-export const metadata = {
-  title: "Standards",
-};
+import Link from "next/link";
+
+export const metadata = { title: "Catalogue Standards" };
 
 export default function Standards() {
   return (
-    <section className="content-page">
-      <span className="kicker">THE SYNTRA STANDARD</span>
+    <div className="standards-page">
+      <section className="standards-hero">
+        <span className="kicker">THE SYNTRA STANDARD</span>
+        <h1>Clarity, traceability and <em>responsible research communication.</em></h1>
+        <p>
+          A professional research catalogue should make it easy to distinguish product identity, commercial information,
+          scientific literature and claims that require independent analytical verification.
+        </p>
+      </section>
 
-      <h1>Precision. Purity. Consistency.</h1>
+      <section className="standards-principles">
+        <article><span>01</span><h2>Catalogue identity</h2><p>Every listing is structured around product name, catalogue code, strength, category and live availability.</p></article>
+        <article><span>02</span><h2>Evidence separation</h2><p>Published literature is presented as compound-level scientific context. A paper about a molecule is not proof of a catalogue vial&apos;s quality.</p></article>
+        <article><span>03</span><h2>No dosing content</h2><p>The public catalogue intentionally excludes administration protocols, therapeutic instructions and veterinary guidance.</p></article>
+        <article><span>04</span><h2>Server-side commerce</h2><p>Prices and stock are checked on the server before Stripe Checkout is created, rather than trusting values sent by the browser.</p></article>
+        <article><span>05</span><h2>Research-use positioning</h2><p>Catalogue materials are presented for laboratory research use only and not for human or veterinary use.</p></article>
+        <article><span>06</span><h2>Transparent support</h2><p>Order and catalogue support is separated from scientific interpretation or medical advice.</p></article>
+      </section>
 
-      <div className="content-grid">
-        <article>
-          <h2>Laboratory-grade quality</h2>
-          <p>
-            Every product is presented with consistent specifications, clear
-            identification and professional labelling to ensure accuracy across
-            the entire catalogue.
-          </p>
-        </article>
-
-        <article>
-          <h2>Premium product presentation</h2>
-          <p>
-            Each vial features clearly displayed strength, product name and
-            research classification for quick and reliable identification.
-          </p>
-        </article>
-
-        <article>
-          <h2>Quality assurance</h2>
-          <p>
-            Our catalogue is designed around consistency, professional
-            presentation and dependable quality standards expected from modern
-            laboratory research suppliers.
-          </p>
-        </article>
-
-        <article>
-          <h2>Research use only</h2>
-          <p>
-            All products are supplied exclusively as laboratory research
-            materials and are not intended for human or veterinary use.
-          </p>
-        </article>
-
-        <article>
-          <h2>Secure fulfilment</h2>
-          <p>
-            Orders are prepared with discreet packaging, protected handling and
-            secure delivery to maintain product integrity throughout transport.
-          </p>
-        </article>
-
-        <article>
-          <h2>Customer support</h2>
-          <p>
-            Our team is available to assist with product information, orders,
-            shipping enquiries and general catalogue support before and after
-            purchase.
-          </p>
-        </article>
-      </div>
-    </section>
+      <section className="standards-evidence-band">
+        <div>
+          <span className="kicker">EVIDENCE LABELS</span>
+          <h2>Not all research evidence is equal.</h2>
+          <p>Our research library labels evidence as clinical, early clinical, preclinical, mechanistic or laboratory accessory context.</p>
+        </div>
+        <Link href="/research" className="button-secondary">Explore research library</Link>
+      </section>
+    </div>
   );
 }

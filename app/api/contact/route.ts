@@ -18,7 +18,7 @@ export async function POST(request: Request) {
 
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.CONTACT_TO_EMAIL || siteConfig.email;
-  const from = process.env.CONTACT_FROM_EMAIL || "Syntra Labs <onboarding@resend.dev>";
+  const from = process.env.CONTACT_FROM_EMAIL || "Syntra Labs <support@syntralabs.co.uk>";
   if (!apiKey) {
     console.info("CONTACT_FORM", parsed.data);
     return NextResponse.json({

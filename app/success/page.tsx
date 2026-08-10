@@ -1,1 +1,4 @@
-import Link from 'next/link'; export default function Success(){return <section className="result"><h1>Payment received.</h1><p>Your checkout was completed successfully. Keep your confirmation email for your records.</p><Link className="primary" href="/shop">Return to shop</Link></section>}
+import Link from "next/link";
+export default function Success() {
+  return <section className="result-page"><span className="result-icon">✓</span><span className="kicker">PAYMENT CONFIRMED</span><h1>Order received.</h1><p>Your Stripe checkout completed successfully. Keep your confirmation email and order reference for your records.</p><Link className="button-primary" href="/shop">Return to catalogue <span>→</span></Link></section>;
+}
