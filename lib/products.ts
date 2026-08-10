@@ -36,7 +36,7 @@ export const products: Product[] = [
     strength: "5 mg",
     category: "Metabolic",
 
-    price: 49,
+    price: 39,
     stock: 17,
     featured: true,
 
@@ -58,7 +58,7 @@ export const products: Product[] = [
     strength: "10 mg",
     category: "Metabolic",
 
-    price: 79,
+    price: 69,
     stock: 21,
     featured: true,
 
@@ -80,7 +80,7 @@ export const products: Product[] = [
     strength: "5 mg",
     category: "Metabolic",
 
-    price: 55,
+    price: 45,
     stock: 14,
     featured: false,
 
@@ -102,7 +102,7 @@ export const products: Product[] = [
     strength: "20 mg",
     category: "Metabolic",
 
-    price: 125,
+    price: 105,
     stock: 22,
     featured: true,
 
@@ -124,7 +124,7 @@ export const products: Product[] = [
     strength: "30 mg",
     category: "Metabolic",
 
-    price: 155,
+    price: 125,
     stock: 18,
     featured: true,
 
@@ -146,7 +146,7 @@ export const products: Product[] = [
     strength: "10 mg",
     category: "Peptide",
 
-    price: 58,
+    price: 48,
     stock: 28,
     featured: true,
 
@@ -168,7 +168,7 @@ export const products: Product[] = [
     strength: "20 mg",
     category: "Peptide",
 
-    price: 85,
+    price: 75,
     stock: 18,
 
     image: "/products/bpc20.png",
@@ -189,7 +189,7 @@ export const products: Product[] = [
     strength: "100 mg",
     category: "Peptide",
 
-    price: 55,
+    price: 45,
     stock: 24,
     featured: true,
 
@@ -211,7 +211,7 @@ export const products: Product[] = [
     strength: "1000 mg",
     category: "Peptide",
 
-    price: 180,
+    price: 120,
     stock: 7,
 
     image: "/products/ghk1000.png",
@@ -232,7 +232,7 @@ export const products: Product[] = [
     strength: "100 mg",
     category: "Peptide",
 
-    price: 55,
+    price: 50,
     stock: 13,
 
     image: "/products/ahk100.png",
@@ -253,7 +253,7 @@ export const products: Product[] = [
     strength: "100 mg",
     category: "Cellular",
 
-    price: 43,
+    price: 35,
     stock: 31,
     featured: true,
 
@@ -275,7 +275,7 @@ export const products: Product[] = [
     strength: "1000 mg",
     category: "Cellular",
 
-    price: 120,
+    price: 98,
     stock: 8,
 
     image: "/products/nad1000.png",
@@ -296,7 +296,7 @@ export const products: Product[] = [
     strength: "5 mg",
     category: "Hormone",
 
-    price: 68,
+    price: 48,
     stock: 12,
 
     image: "/products/tesa5.png",
@@ -317,7 +317,7 @@ export const products: Product[] = [
     strength: "10 mg",
     category: "Metabolic",
 
-    price: 85,
+    price: 65,
     stock: 8,
 
     image: "/products/survo10.png",
