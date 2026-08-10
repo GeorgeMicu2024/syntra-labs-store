@@ -9,9 +9,7 @@ const VALID_FOR_DAYS = 30;
 export default function AgeGate() {
   const [visible, setVisible] = useState(false);
   const [ready, setReady] = useState(false);
-
-  const [ageConfirmed, setAgeConfirmed] = useState(false);
-  const [researchConfirmed, setResearchConfirmed] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
 
   /*
    * ---------------------------------------------------------
@@ -27,11 +25,7 @@ export default function AgeGate() {
 
         const expiresAt =
           confirmedAt +
-          VALID_FOR_DAYS *
-            24 *
-            60 *
-            60 *
-            1000;
+          VALID_FOR_DAYS * 24 * 60 * 60 * 1000;
 
         if (
           Number.isFinite(confirmedAt) &&
@@ -83,10 +77,7 @@ export default function AgeGate() {
    * ---------------------------------------------------------
    */
   function enterSite() {
-    if (
-      !ageConfirmed ||
-      !researchConfirmed
-    ) {
+    if (!confirmed) {
       return;
     }
 
@@ -122,8 +113,7 @@ export default function AgeGate() {
       return;
     }
 
-    window.location.href =
-      "https://www.google.com/";
+    window.location.href = "https://www.google.com/";
   }
 
   /*
@@ -142,8 +132,8 @@ export default function AgeGate() {
       aria-labelledby="age-gate-title"
     >
       <div className="age-gate-card v7-age-gate-card">
-        {/* TOP */}
 
+        {/* TOP */}
         <div className="v7-gate-top">
           <div className="age-gate-brand">
             <span className="age-gate-mark">
@@ -152,7 +142,6 @@ export default function AgeGate() {
 
             <div>
               <strong>SYNTRA</strong>
-
               <small>
                 LABS · RESEARCH CATALOGUE
               </small>
@@ -165,35 +154,31 @@ export default function AgeGate() {
         </div>
 
         {/* STATUS */}
-
         <div className="age-gate-status">
           <span />
           RESTRICTED RESEARCH ACCESS
         </div>
 
+        {/* TITLE */}
         <h1 id="age-gate-title">
           Research access confirmation.
         </h1>
 
+        {/* INTRO */}
         <p className="age-gate-lead">
-          This catalogue is intended for adult
-          laboratory-research customers.
-          Catalogue materials are supplied for
-          research use only and are not medicines
-          or products for human or veterinary use.
+          Access to the Syntra Labs catalogue is restricted
+          to adults accessing materials for legitimate
+          laboratory research purposes.
         </p>
 
-        {/* CHECKBOXES */}
-
+        {/* SINGLE CONFIRMATION */}
         <div className="age-gate-checks">
           <label>
             <input
               type="checkbox"
-              checked={ageConfirmed}
+              checked={confirmed}
               onChange={(event) =>
-                setAgeConfirmed(
-                  event.target.checked
-                )
+                setConfirmed(event.target.checked)
               }
             />
 
@@ -206,69 +191,32 @@ export default function AgeGate() {
 
             <span>
               <b>
-                I confirm that I am 18 years
-                of age or older.
+                I confirm that I am 18 years of age or older
+                and that I will use all catalogue materials
+                for laboratory research purposes only.
               </b>
 
               <small>
-                Your confirmation will be
-                remembered on this browser
-                for 30 days.
-              </small>
-            </span>
-          </label>
-
-          <label>
-            <input
-              type="checkbox"
-              checked={researchConfirmed}
-              onChange={(event) =>
-                setResearchConfirmed(
-                  event.target.checked
-                )
-              }
-            />
-
-            <span
-              className="age-check-ui"
-              aria-hidden="true"
-            >
-              ✓
-            </span>
-
-            <span>
-              <b>
-                I understand that all catalogue
-                materials are for laboratory
-                research use only.
-              </b>
-
-              <small>
-                No medical, dosing,
-                administration or veterinary
-                guidance is provided.
+                Catalogue materials are not intended for
+                human or veterinary use. This confirmation
+                will be remembered on this browser for 30 days.
               </small>
             </span>
           </label>
         </div>
 
-        {/* ENTER */}
-
+        {/* ENTER BUTTON */}
         <button
           type="button"
           className="age-gate-enter"
-          disabled={
-            !ageConfirmed ||
-            !researchConfirmed
-          }
+          disabled={!confirmed}
           onClick={enterSite}
         >
           Confirm & enter catalogue
           <span>→</span>
         </button>
 
-        {/* LEAVE */}
-
+        {/* LEAVE BUTTON */}
         <button
           type="button"
           className="age-gate-leave"
@@ -278,7 +226,6 @@ export default function AgeGate() {
         </button>
 
         {/* LEGAL */}
-
         <p className="age-gate-legal">
           By continuing you acknowledge our{" "}
           <Link href="/policies/terms">
@@ -296,13 +243,13 @@ export default function AgeGate() {
         </p>
 
         {/* FOOTER */}
-
         <div className="age-gate-foot">
           <span>18+ access</span>
           <span>Research use only</span>
           <span>UK catalogue</span>
           <span>Secure checkout</span>
         </div>
+
       </div>
     </div>
   );

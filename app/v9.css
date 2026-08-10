@@ -347,3 +347,129 @@
 .v9-member-price-line span { color:#6fa98f; font-size:5px; font-weight:900; letter-spacing:.07em; }
 .v9-member-price-line strong { color:#a9e6c8; font-size:12px; }
 .result-actions { display:flex; gap:9px; justify-content:center; flex-wrap:wrap; margin-top:18px; }
+/* =========================================================
+   SYNTRA LABS — AGE GATE POSITIONING
+   ========================================================= */
+
+.age-gate-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 99999 !important;
+
+  width: 100vw !important;
+  height: 100dvh !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  padding: 24px !important;
+  margin: 0 !important;
+
+  overflow-y: auto;
+
+  background:
+    radial-gradient(
+      circle at 50% 30%,
+      rgba(101, 112, 255, 0.10),
+      transparent 38%
+    ),
+    rgba(3, 8, 18, 0.96);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+
+/* CARD */
+
+.age-gate-card.v7-age-gate-card {
+  position: relative !important;
+
+  width: 100% !important;
+  max-width: 610px !important;
+
+  margin: auto !important;
+
+  padding: 32px 36px 26px !important;
+
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
+
+  border: 1px solid rgba(118, 135, 255, 0.32);
+  border-radius: 22px;
+
+  background:
+    radial-gradient(
+      circle at 90% 0%,
+      rgba(99, 108, 255, 0.18),
+      transparent 32%
+    ),
+    linear-gradient(
+      145deg,
+      #101a30 0%,
+      #091222 48%,
+      #060d19 100%
+    );
+
+  box-shadow:
+    0 40px 120px rgba(0, 0, 0, 0.65),
+    0 0 80px rgba(82, 96, 255, 0.08);
+}
+
+
+/* TITLE */
+
+.age-gate-card.v7-age-gate-card h1 {
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.05;
+  margin-top: 24px;
+  margin-bottom: 18px;
+}
+
+
+/* DESCRIPTION */
+
+.age-gate-card.v7-age-gate-card .age-gate-lead {
+  font-size: 14px;
+  line-height: 1.7;
+  max-width: 520px;
+}
+
+
+/* CHECKBOX AREA */
+
+.age-gate-card.v7-age-gate-card .age-gate-checks {
+  margin-top: 24px;
+  display: grid;
+  gap: 10px;
+}
+
+
+/* ENTER BUTTON */
+
+.age-gate-card.v7-age-gate-card .age-gate-enter {
+  margin-top: 18px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+  .age-gate-overlay {
+    padding: 14px !important;
+  }
+
+  .age-gate-card.v7-age-gate-card {
+    max-width: 520px !important;
+    padding: 24px 20px 20px !important;
+    border-radius: 18px;
+    max-height: calc(100dvh - 28px);
+  }
+
+  .age-gate-card.v7-age-gate-card h1 {
+    font-size: 29px;
+  }
+
+}
