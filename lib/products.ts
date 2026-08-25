@@ -39,12 +39,16 @@ export const products: Product[] = [
     strength: "5 mg",
     category: "Metabolic",
 
-    price: 39,
-    compareAtPrice: 49,
+    price: 27.3,
+    compareAtPrice: 39,
     stock: 17,
     featured: true,
-    badge: "SPECIAL OFFER",
-    highlights: ["5 mg vial", "Metabolic research", "Live UK stock"],
+    badge: "30% OFF",
+    highlights: [
+      "5 mg vial",
+      "Metabolic research",
+      "Live UK stock",
+    ],
 
     image: "/products/tr5.png",
 
@@ -64,12 +68,16 @@ export const products: Product[] = [
     strength: "10 mg",
     category: "Metabolic",
 
-    price: 69,
-    compareAtPrice: 79,
+    price: 48.3,
+    compareAtPrice: 69,
     stock: 21,
     featured: true,
-    badge: "SPECIAL OFFER",
-    highlights: ["10 mg vial", "Metabolic research", "Live UK stock"],
+    badge: "30% OFF",
+    highlights: [
+      "10 mg vial",
+      "Metabolic research",
+      "Live UK stock",
+    ],
 
     image: "/products/tr10.png",
 
@@ -89,12 +97,16 @@ export const products: Product[] = [
     strength: "5 mg",
     category: "Metabolic",
 
-    price: 45,
-    compareAtPrice: 55,
+    price: 31.5,
+    compareAtPrice: 45,
     stock: 14,
     featured: false,
-    badge: "CATALOGUE OFFER",
-    highlights: ["5 mg vial", "Triple-receptor research", "Batch availability"],
+    badge: "30% OFF",
+    highlights: [
+      "5 mg vial",
+      "Triple-receptor research",
+      "Batch availability",
+    ],
 
     image: "/products/rt5.png",
 
@@ -114,12 +126,16 @@ export const products: Product[] = [
     strength: "20 mg",
     category: "Metabolic",
 
-    price: 105,
-    compareAtPrice: 125,
+    price: 73.5,
+    compareAtPrice: 105,
     stock: 22,
     featured: true,
-    badge: "CATALOGUE OFFER",
-    highlights: ["20 mg vial", "Triple-receptor research", "Batch availability"],
+    badge: "30% OFF",
+    highlights: [
+      "20 mg vial",
+      "Triple-receptor research",
+      "Batch availability",
+    ],
 
     image: "/products/rt20.png",
 
@@ -139,12 +155,16 @@ export const products: Product[] = [
     strength: "30 mg",
     category: "Metabolic",
 
-    price: 125,
-    compareAtPrice: 155,
+    price: 87.5,
+    compareAtPrice: 125,
     stock: 18,
     featured: true,
-    badge: "SPECIAL OFFER",
-    highlights: ["30 mg vial", "Triple-receptor research", "Featured catalogue"],
+    badge: "30% OFF",
+    highlights: [
+      "30 mg vial",
+      "Triple-receptor research",
+      "Featured catalogue",
+    ],
 
     image: "/products/rt30.png",
 
@@ -164,12 +184,16 @@ export const products: Product[] = [
     strength: "10 mg",
     category: "Peptide",
 
-    price: 48,
-    compareAtPrice: 58,
+    price: 33.6,
+    compareAtPrice: 48,
     stock: 28,
     featured: true,
-    badge: "SPECIAL OFFER",
-    highlights: ["10 mg vial", "Peptide research", "Live UK stock"],
+    badge: "30% OFF",
+    highlights: [
+      "10 mg vial",
+      "Peptide research",
+      "Live UK stock",
+    ],
 
     image: "/products/bpc10.png",
 
@@ -189,11 +213,15 @@ export const products: Product[] = [
     strength: "20 mg",
     category: "Peptide",
 
-    price: 75,
-    compareAtPrice: 85,
+    price: 52.5,
+    compareAtPrice: 75,
     stock: 18,
-    badge: "CATALOGUE OFFER",
-    highlights: ["20 mg vial", "Peptide research", "Batch availability"],
+    badge: "30% OFF",
+    highlights: [
+      "20 mg vial",
+      "Peptide research",
+      "Batch availability",
+    ],
 
     image: "/products/bpc20.png",
 
@@ -213,12 +241,16 @@ export const products: Product[] = [
     strength: "100 mg",
     category: "Peptide",
 
-    price: 45,
-    compareAtPrice: 55,
+    price: 31.5,
+    compareAtPrice: 45,
     stock: 24,
     featured: true,
-    badge: "SPECIAL OFFER",
-    highlights: ["100 mg vial", "Copper peptide research", "Live UK stock"],
+    badge: "30% OFF",
+    highlights: [
+      "100 mg vial",
+      "Copper peptide research",
+      "Live UK stock",
+    ],
 
     image: "/products/ghk100.png",
 
@@ -238,11 +270,15 @@ export const products: Product[] = [
     strength: "1000 mg",
     category: "Peptide",
 
-    price: 120,
-    compareAtPrice: 180,
+    price: 84,
+    compareAtPrice: 120,
     stock: 7,
-    badge: "CATALOGUE OFFER",
-    highlights: ["1000 mg format", "Copper peptide research", "Limited stock"],
+    badge: "30% OFF",
+    highlights: [
+      "1000 mg format",
+      "Copper peptide research",
+      "Limited stock",
+    ],
 
     image: "/products/ghk1000.png",
 
@@ -262,11 +298,15 @@ export const products: Product[] = [
     strength: "100 mg",
     category: "Peptide",
 
-    price: 50,
-    compareAtPrice: 55,
+    price: 35,
+    compareAtPrice: 50,
     stock: 13,
-    badge: "CATALOGUE OFFER",
-    highlights: ["100 mg vial", "Peptide research", "Live UK stock"],
+    badge: "30% OFF",
+    highlights: [
+      "100 mg vial",
+      "Peptide research",
+      "Live UK stock",
+    ],
 
     image: "/products/ahk100.png",
 
@@ -286,12 +326,16 @@ export const products: Product[] = [
     strength: "100 mg",
     category: "Cellular",
 
-    price: 35,
-    compareAtPrice: 43,
+    price: 24.5,
+    compareAtPrice: 35,
     stock: 31,
     featured: true,
-    badge: "SPECIAL OFFER",
-    highlights: ["100 mg vial", "Cellular research", "Live UK stock"],
+    badge: "30% OFF",
+    highlights: [
+      "100 mg vial",
+      "Cellular research",
+      "Live UK stock",
+    ],
 
     image: "/products/nad100.png",
 
@@ -311,11 +355,15 @@ export const products: Product[] = [
     strength: "1000 mg",
     category: "Cellular",
 
-    price: 98,
-    compareAtPrice: 120,
+    price: 68.6,
+    compareAtPrice: 98,
     stock: 8,
-    badge: "CATALOGUE OFFER",
-    highlights: ["1000 mg format", "Cellular research", "Batch availability"],
+    badge: "30% OFF",
+    highlights: [
+      "1000 mg format",
+      "Cellular research",
+      "Batch availability",
+    ],
 
     image: "/products/nad1000.png",
 
@@ -335,11 +383,15 @@ export const products: Product[] = [
     strength: "5 mg",
     category: "Hormone",
 
-    price: 48,
-    compareAtPrice: 68,
+    price: 33.6,
+    compareAtPrice: 48,
     stock: 12,
-    badge: "SPECIAL OFFER",
-    highlights: ["5 mg vial", "Hormone-pathway research", "Live UK stock"],
+    badge: "30% OFF",
+    highlights: [
+      "5 mg vial",
+      "Hormone-pathway research",
+      "Live UK stock",
+    ],
 
     image: "/products/tesa5.png",
 
@@ -359,11 +411,15 @@ export const products: Product[] = [
     strength: "10 mg",
     category: "Metabolic",
 
-    price: 65,
-    compareAtPrice: 85,
+    price: 45.5,
+    compareAtPrice: 65,
     stock: 8,
-    badge: "CATALOGUE OFFER",
-    highlights: ["10 mg vial", "Metabolic research", "Limited stock"],
+    badge: "30% OFF",
+    highlights: [
+      "10 mg vial",
+      "Metabolic research",
+      "Limited stock",
+    ],
 
     image: "/products/survo10.png",
 
@@ -383,11 +439,15 @@ export const products: Product[] = [
     strength: "60 mg",
     category: "Cellular",
 
-    price: 62,
-    compareAtPrice: 72,
+    price: 43.4,
+    compareAtPrice: 62,
     stock: 10,
-    badge: "CATALOGUE OFFER",
-    highlights: ["60 mg format", "Cellular research", "Live UK stock"],
+    badge: "30% OFF",
+    highlights: [
+      "60 mg format",
+      "Cellular research",
+      "Live UK stock",
+    ],
 
     image: "/products/cere60.png",
 
@@ -407,8 +467,15 @@ export const products: Product[] = [
     strength: "5 mg",
     category: "Peptide",
 
-    price: 45,
+    price: 31.5,
+    compareAtPrice: 45,
     stock: 18,
+    badge: "30% OFF",
+    highlights: [
+      "5 mg vial",
+      "Peptide research",
+      "Live UK stock",
+    ],
 
     image: "/products/mt5.png",
 
@@ -428,11 +495,15 @@ export const products: Product[] = [
     strength: "10 mg",
     category: "Peptide",
 
-    price: 48,
-    compareAtPrice: 58,
+    price: 33.6,
+    compareAtPrice: 48,
     stock: 12,
-    badge: "CATALOGUE OFFER",
-    highlights: ["10 mg vial", "Peptide research", "Live UK stock"],
+    badge: "30% OFF",
+    highlights: [
+      "10 mg vial",
+      "Peptide research",
+      "Live UK stock",
+    ],
 
     image: "/products/selank10.png",
 
@@ -452,11 +523,15 @@ export const products: Product[] = [
     strength: "2000 IU",
     category: "Hormone",
 
-    price: 55,
-    compareAtPrice: 65,
+    price: 38.5,
+    compareAtPrice: 55,
     stock: 10,
-    badge: "CATALOGUE OFFER",
-    highlights: ["2000 IU format", "Hormone research", "Live UK stock"],
+    badge: "30% OFF",
+    highlights: [
+      "2000 IU format",
+      "Hormone research",
+      "Live UK stock",
+    ],
 
     image: "/products/hcg2000.png",
 
@@ -476,11 +551,15 @@ export const products: Product[] = [
     strength: "2 mg",
     category: "Peptide",
 
-    price: 39,
-    compareAtPrice: 49,
+    price: 27.3,
+    compareAtPrice: 39,
     stock: 15,
-    badge: "SPECIAL OFFER",
-    highlights: ["2 mg vial", "Peptide-fragment research", "Live UK stock"],
+    badge: "30% OFF",
+    highlights: [
+      "2 mg vial",
+      "Peptide-fragment research",
+      "Live UK stock",
+    ],
 
     image: "/products/aod2.png",
 
@@ -500,8 +579,15 @@ export const products: Product[] = [
     strength: "3 ml",
     category: "Lab Supplies",
 
-    price: 1,
+    price: 5,
     stock: 45,
+    featured: false,
+    badge: "LAB SUPPLY",
+    highlights: [
+      "3 ml vial",
+      "Laboratory preparation material",
+      "Live UK stock",
+    ],
 
     image: "/products/bac3.png",
 
@@ -515,13 +601,19 @@ export const products: Product[] = [
 ];
 
 export const getProduct = (slug: string) =>
-  products.find((product) => product.slug === slug);
+  products.find(
+    (product) => product.slug === slug
+  );
 
 export const getProductById = (id: string) =>
-  products.find((product) => product.id === id);
+  products.find(
+    (product) => product.id === id
+  );
 
 export const getFeaturedProducts = () =>
-  products.filter((product) => product.featured);
+  products.filter(
+    (product) => product.featured
+  );
 
 export const getProductsByCategory = (
   category: ProductCategory

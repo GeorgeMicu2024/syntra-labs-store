@@ -755,3 +755,462 @@
 }
 
 @keyframes v8SheetIn { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:none; } }
+/* =========================================================
+   SYNTRA LABS — RECENTLY VIEWED V2
+   ========================================================= */
+
+.v8-recent {
+  width: 100%;
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 70px 5vw 80px;
+  border-top: 1px solid #1d2c47;
+}
+
+.v8-recent-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: 28px;
+}
+
+.v8-recent-head h2 {
+  margin: 8px 0 10px;
+  max-width: 760px;
+  font-size: clamp(36px, 4vw, 56px);
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+
+.v8-recent-head p {
+  margin: 0;
+  max-width: 620px;
+  color: #8190a8;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.v8-recent-head-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.v8-recent-head-actions button,
+.v8-recent-head-actions a {
+  min-height: 40px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid #2d4062;
+  border-radius: 9px;
+  background: #0a1425;
+  color: #aebbd0;
+  font-size: 8px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.v8-recent-head-actions a {
+  border-color: #465fa5;
+  color: #dbe3f3;
+}
+
+.v8-recent-head-actions button:hover,
+.v8-recent-head-actions a:hover {
+  background: #101d34;
+  border-color: #6078d8;
+}
+
+
+/* GRID */
+
+.v8-recent-rail {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(260px, 320px)
+  );
+  justify-content: start;
+  gap: 16px;
+}
+
+
+/* if only 1-2 products, never stretch them */
+
+.v8-recent-count-1 {
+  grid-template-columns: minmax(
+    260px,
+    320px
+  );
+}
+
+.v8-recent-count-2 {
+  grid-template-columns: repeat(
+    2,
+    minmax(260px, 320px)
+  );
+}
+
+.v8-recent-count-3 {
+  grid-template-columns: repeat(
+    3,
+    minmax(260px, 320px)
+  );
+}
+
+.v8-recent-count-4 {
+  grid-template-columns: repeat(
+    4,
+    minmax(260px, 320px)
+  );
+}
+
+
+/* CARD */
+
+.v8-recent-card {
+  width: 100%;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  border: 1px solid #263959;
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #0c1628,
+      #07101d
+    );
+
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.v8-recent-card:hover {
+  transform: translateY(-4px);
+  border-color: #4c64ae;
+  box-shadow:
+    0 18px 45px
+    rgba(0, 0, 0, 0.25);
+}
+
+
+/* IMAGE */
+
+.v8-recent-image {
+  position: relative;
+
+  width: 100%;
+  height: 220px;
+
+  display: grid;
+  place-items: center;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f8fafc,
+      #eef3f8
+    );
+}
+
+.v8-recent-image-inner {
+  width: 100%;
+  height: 100%;
+
+  display: grid;
+  place-items: center;
+
+  padding: 16px;
+}
+
+.v8-recent-product-image {
+  width: 100% !important;
+  height: 100% !important;
+
+  max-width: 240px;
+  max-height: 190px;
+
+  object-fit: contain !important;
+
+  transform: none !important;
+
+  transition:
+    transform 0.3s ease;
+}
+
+.v8-recent-card:hover
+.v8-recent-product-image {
+  transform: scale(1.025) !important;
+}
+
+
+/* TIME BADGE */
+
+.v8-recent-time {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+
+  padding: 5px 7px;
+
+  border: 1px solid #344b72;
+  border-radius: 6px;
+
+  background:
+    rgba(5, 12, 23, 0.88);
+
+  color: #aab9d0;
+
+  font-size: 7px;
+  font-weight: 800;
+}
+
+
+/* COPY */
+
+.v8-recent-copy {
+  padding: 15px 16px 8px;
+}
+
+.v8-recent-copy small {
+  display: block;
+
+  color: #7188ff;
+
+  font-size: 7px;
+  font-weight: 900;
+
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.v8-recent-copy h3 {
+  margin: 8px 0 6px;
+
+  font-size: 18px;
+  line-height: 1.15;
+
+  letter-spacing: -0.025em;
+}
+
+.v8-recent-copy > span {
+  color: #8492a7;
+  font-size: 9px;
+}
+
+
+/* PRICE / META */
+
+.v8-recent-meta {
+  margin-top: auto;
+
+  padding: 10px 16px 16px;
+}
+
+.v8-recent-price-row {
+  min-height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-bottom: 11px;
+}
+
+.v8-recent-price-row b {
+  font-size: 19px;
+  letter-spacing: -0.02em;
+}
+
+.v8-recent-stock {
+  font-size: 7px;
+  font-weight: 850;
+
+  color: #68d6a3;
+}
+
+.v8-recent-stock.low {
+  color: #e6b75c;
+}
+
+.v8-recent-stock.out {
+  color: #e06d78;
+}
+
+
+/* QUICK VIEW */
+
+.v8-recent-meta button {
+  width: 100%;
+  min-height: 38px;
+
+  border: 1px solid #30466d;
+  border-radius: 8px;
+
+  background: #0c1729;
+
+  color: #9fb0ff;
+
+  font-size: 8px;
+  font-weight: 900;
+
+  text-transform: uppercase;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.v8-recent-meta button:hover {
+  border-color: #6079df;
+  background: #142243;
+  color: #fff;
+}
+
+
+/* TABLET */
+
+@media (max-width: 1100px) {
+  .v8-recent-count-4,
+  .v8-recent-count-3 {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(260px, 1fr)
+      );
+  }
+
+  .v8-recent-rail {
+    max-width: 700px;
+  }
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+  .v8-recent {
+    padding:
+      50px
+      18px
+      65px;
+  }
+
+  .v8-recent-head {
+    display: block;
+  }
+
+  .v8-recent-head h2 {
+    font-size: 36px;
+  }
+
+  .v8-recent-head-actions {
+    margin-top: 18px;
+  }
+
+  .v8-recent-head-actions button,
+  .v8-recent-head-actions a {
+    flex: 1;
+  }
+
+  .v8-recent-rail,
+  .v8-recent-count-1,
+  .v8-recent-count-2,
+  .v8-recent-count-3,
+  .v8-recent-count-4 {
+    grid-template-columns: 1fr;
+    max-width: none;
+  }
+
+  .v8-recent-image {
+    height: 240px;
+  }
+
+  .v8-recent-product-image {
+    max-width: 280px;
+    max-height: 205px;
+  }
+}
+
+/* =========================================================
+   SYNTRA LABS — PRODUCT IMAGE NORMALISATION
+   Targeted correction for TR10 + RETA5 only.
+   Keeps every other catalogue image untouched.
+   ========================================================= */
+
+.v8-product-card .v8-product-visual .product-image-tr10,
+.v8-product-card .v8-product-visual .product-image-rt5 {
+  position: relative !important;
+  inset: auto !important;
+
+  display: block !important;
+  place-self: center !important;
+  align-self: center !important;
+  justify-self: center !important;
+
+  object-fit: contain !important;
+  object-position: center center !important;
+
+  margin: auto !important;
+  transform-origin: center center !important;
+
+  filter: drop-shadow(0 22px 30px rgba(0, 0, 0, .26));
+}
+
+/* Tirzepatide 10 mg — source artwork is tighter than the other cards */
+.v8-product-card .v8-product-visual .product-image-tr10 {
+  width: 66% !important;
+  height: 66% !important;
+  max-width: 66% !important;
+  max-height: 66% !important;
+  transform: none !important;
+}
+
+/* Retatrutide 5 mg — source artwork is slightly tighter again */
+.v8-product-card .v8-product-visual .product-image-rt5 {
+  width: 62% !important;
+  height: 62% !important;
+  max-width: 62% !important;
+  max-height: 62% !important;
+  transform: none !important;
+}
+
+/* Controlled hover: no aggressive zoom/crop */
+.v8-product-card:hover .v8-product-visual .product-image-tr10,
+.v8-product-card:hover .v8-product-visual .product-image-rt5 {
+  transform: scale(1.025) !important;
+  filter: drop-shadow(0 26px 34px rgba(0, 0, 0, .32)) brightness(1.02);
+}
+
+/* Keep the two corrected images balanced on smaller screens */
+@media (max-width: 980px) {
+  .v8-product-card .v8-product-visual .product-image-tr10 {
+    width: 70% !important;
+    height: 70% !important;
+    max-width: 70% !important;
+    max-height: 70% !important;
+  }
+
+  .v8-product-card .v8-product-visual .product-image-rt5 {
+    width: 66% !important;
+    height: 66% !important;
+    max-width: 66% !important;
+    max-height: 66% !important;
+  }
+}

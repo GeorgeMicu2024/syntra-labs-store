@@ -2,9 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
+
 import type { Product } from "@/lib/products";
 import { displayProductName } from "@/lib/display";
 import { getResearchProfile } from "@/lib/research";
+
 import {
   getAvailabilityMessage,
   getCommerceHighlights,
@@ -14,76 +16,384 @@ import {
   getStockState,
   hasDiscount,
 } from "@/lib/commerce";
+
 import { useCart } from "./CartProvider";
 import { useAuth } from "./AuthProvider";
 import WishlistButton from "./WishlistButton";
 
-export default function ProductCard({ product }: { product: Product }) {
+export default function ProductCard({
+  product,
+}: {
+  product: Product;
+}) {
   const { add } = useCart();
-  const { user, discountPercent } = useAuth();
-  const unavailable = product.stock <= 0;
-  const research = getResearchProfile(product.id);
-  const name = displayProductName(product.name);
-  const savings = getSavings(product);
-  const stockState = getStockState(product.stock);
-  const highlights = getCommerceHighlights(product).slice(0, 3);
+
+  const {
+    user,
+    discountPercent,
+  } = useAuth();
+
+  const unavailable =
+    product.stock <= 0;
+
+  const research =
+    getResearchProfile(product.id);
+
+  const name =
+    displayProductName(
+      product.name
+    );
+
+  const savings =
+    getSavings(product);
+
+  const stockState =
+    getStockState(
+      product.stock
+    );
+
+  const highlights =
+    getCommerceHighlights(product)
+      .slice(0, 3);
 
   function addToCart() {
-    if (unavailable) return;
+    if (unavailable) {
+      return;
+    }
+
     add(product);
-    window.dispatchEvent(new CustomEvent("syntra:toast", { detail: { message: `${name} added to cart`, detail: `${product.strength} · £${product.price.toFixed(2)}` } }));
-    window.dispatchEvent(new CustomEvent("syntra:open-cart"));
+
+    window.dispatchEvent(
+      new CustomEvent(
+        "syntra:toast",
+        {
+          detail: {
+            message:
+              `${name} added to cart`,
+
+            detail:
+              `${product.strength} · £${product.price.toFixed(2)}`,
+          },
+        }
+      )
+    );
+
+    window.dispatchEvent(
+      new CustomEvent(
+        "syntra:open-cart"
+      )
+    );
   }
 
   function quickView() {
-    window.dispatchEvent(new CustomEvent("syntra:quick-view", { detail: product }));
+    window.dispatchEvent(
+      new CustomEvent(
+        "syntra:quick-view",
+        {
+          detail: product,
+        }
+      )
+    );
   }
 
   return (
-    <article className={`v6-product-card v7-product-card v8-product-card ${hasDiscount(product) ? "is-offer" : ""}`}>
-      <Link href={`/product/${product.slug}`} className="v6-product-visual v7-product-visual v8-product-visual">
+    <article
+      className={`
+        v6-product-card
+        v7-product-card
+        v8-product-card
+        ${
+          hasDiscount(product)
+            ? "is-offer"
+            : ""
+        }
+      `}
+    >
+      {/* PRODUCT VISUAL */}
+
+      <Link
+        href={`/product/${product.slug}`}
+        className="
+          v6-product-visual
+          v7-product-visual
+          v8-product-visual
+        "
+      >
+        {/* TOP LINE */}
+
         <div className="v6-card-topline">
-          <span className="v6-card-class">{product.category.toUpperCase()}</span>
-          <span className={`v6-stock-chip ${stockState}`}><i />{getStockLabel(product.stock)}</span>
+          <span className="v6-card-class">
+            {product.category.toUpperCase()}
+          </span>
+
+          <span
+            className={`v6-stock-chip ${stockState}`}
+          >
+            <i />
+
+            {getStockLabel(
+              product.stock
+            )}
+          </span>
         </div>
-        <div className="v10-card-save"><WishlistButton product={product} compact /></div>
 
-        {hasDiscount(product) && <span className="v6-offer-ribbon">{getPrimaryBadge(product)}</span>}
+        {/* WISHLIST */}
 
-        <Image src={product.image} alt={`${name} ${product.strength}`} width={720} height={720} className="v6-product-image v7-product-image v8-product-image" />
+        <div className="v10-card-save">
+          <WishlistButton
+            product={product}
+            compact
+          />
+        </div>
 
-        <div className="v6-image-footer"><span>SL-{product.code}</span><span>RESEARCH USE ONLY</span></div>
+        {/* DISCOUNT */}
+
+        {hasDiscount(product) && (
+          <span className="v6-offer-ribbon">
+            {getPrimaryBadge(
+              product
+            )}
+          </span>
+        )}
+
+        {/* PRODUCT IMAGE */}
+
+        <Image
+          src={product.image}
+          alt={`${name} ${product.strength}`}
+          width={720}
+          height={720}
+          className={`
+            v6-product-image
+            v7-product-image
+            v8-product-image
+            product-image-${product.id}
+          `}
+          sizes="
+            (max-width: 600px) 90vw,
+            (max-width: 980px) 45vw,
+            360px
+          "
+        />
+
+        {/* IMAGE FOOTER */}
+
+        <div className="v6-image-footer">
+          <span>
+            SL-{product.code}
+          </span>
+
+          <span>
+            RESEARCH USE ONLY
+          </span>
+        </div>
       </Link>
 
-      <button type="button" className="v7-quick-trigger" onClick={quickView} aria-label={`Quick view ${name}`}><span>Quick view</span><b>＋</b></button>
+      {/* QUICK VIEW */}
 
-      <div className="v6-product-body v7-product-body v8-product-body">
+      <button
+        type="button"
+        className="v7-quick-trigger"
+        onClick={quickView}
+        aria-label={`Quick view ${name}`}
+      >
+        <span>
+          Quick view
+        </span>
+
+        <b>
+          ＋
+        </b>
+      </button>
+
+      {/* PRODUCT BODY */}
+
+      <div
+        className="
+          v6-product-body
+          v7-product-body
+          v8-product-body
+        "
+      >
+        {/* HEADING */}
+
         <div className="v6-product-heading">
-          <div><h3><Link href={`/product/${product.slug}`}>{name}</Link></h3><span>{product.strength}</span></div>
-          {research && <small>{research.tier}</small>}
+          <div>
+            <h3>
+              <Link
+                href={`/product/${product.slug}`}
+              >
+                {name}
+              </Link>
+            </h3>
+
+            <span>
+              {product.strength}
+            </span>
+          </div>
+
+          {research && (
+            <small>
+              {research.tier}
+            </small>
+          )}
         </div>
 
-        <p className="v6-product-description">{research?.researchClass || product.short}</p>
+        {/* DESCRIPTION */}
+
+        <p className="v6-product-description">
+          {research?.researchClass ||
+            product.short}
+        </p>
+
+        {/* HIGHLIGHTS */}
 
         <div className="v6-highlight-grid">
-          {highlights.map((item, index) => <span key={item}><i>{index + 1}</i>{item}</span>)}
+          {highlights.map(
+            (
+              item,
+              index
+            ) => (
+              <span
+                key={item}
+              >
+                <i>
+                  {index + 1}
+                </i>
+
+                {item}
+              </span>
+            )
+          )}
         </div>
+
+        {/* PRICE */}
 
         <div className="v6-price-zone">
           <div className="v6-price-main">
-            <small>{hasDiscount(product) ? "CURRENT OFFER" : "CATALOGUE PRICE"}</small>
-            <div><strong>£{product.price.toFixed(2)}</strong>{hasDiscount(product) && product.compareAtPrice && <del>£{product.compareAtPrice.toFixed(2)}</del>}</div>
+            <small>
+              {hasDiscount(product)
+                ? "CURRENT OFFER"
+                : "CATALOGUE PRICE"}
+            </small>
+
+            <div>
+              <strong>
+                £
+                {product.price.toFixed(
+                  2
+                )}
+              </strong>
+
+              {hasDiscount(
+                product
+              ) &&
+                product.compareAtPrice && (
+                  <del>
+                    £
+                    {product.compareAtPrice.toFixed(
+                      2
+                    )}
+                  </del>
+                )}
+            </div>
           </div>
-          {savings && <div className="v6-save-block"><span>SAVE</span><strong>£{savings.amount.toFixed(2)}</strong><small>{savings.percent}% OFF</small></div>}
+
+          {/* SAVINGS */}
+
+          {savings && (
+            <div className="v6-save-block">
+              <span>
+                SAVE
+              </span>
+
+              <strong>
+                £
+                {savings.amount.toFixed(
+                  2
+                )}
+              </strong>
+
+              <small>
+                {savings.percent}% OFF
+              </small>
+            </div>
+          )}
         </div>
 
-        {user && discountPercent > 0 && <div className="v9-member-price-line"><span>YOUR MEMBER PRICE · {discountPercent}% OFF</span><strong>£{(product.price * (1 - discountPercent / 100)).toFixed(2)}</strong></div>}
+        {/* MEMBER PRICE */}
 
-        <div className={`v6-live-bar ${stockState}`}><span><i />{getStockLabel(product.stock)}</span><small>{getAvailabilityMessage(product.stock)}</small></div>
+        {user &&
+          discountPercent > 0 && (
+            <div className="v9-member-price-line">
+              <span>
+                YOUR MEMBER PRICE ·{" "}
+                {discountPercent}% OFF
+              </span>
+
+              <strong>
+                £
+                {(
+                  product.price *
+                  (
+                    1 -
+                    discountPercent /
+                      100
+                  )
+                ).toFixed(2)}
+              </strong>
+            </div>
+          )}
+
+        {/* LIVE STOCK */}
+
+        <div
+          className={`v6-live-bar ${stockState}`}
+        >
+          <span>
+            <i />
+
+            {getStockLabel(
+              product.stock
+            )}
+          </span>
+
+          <small>
+            {getAvailabilityMessage(
+              product.stock
+            )}
+          </small>
+        </div>
+
+        {/* ACTIONS */}
 
         <div className="v6-card-actions">
-          <Link href={`/product/${product.slug}`} className="v6-view-details">Research dossier <span>↗</span></Link>
-          <button type="button" disabled={unavailable} onClick={addToCart}>{unavailable ? "Out of stock" : "Add to basket"}{!unavailable && <span>＋</span>}</button>
+          <Link
+            href={`/product/${product.slug}`}
+            className="v6-view-details"
+          >
+            Research dossier
+
+            <span>
+              ↗
+            </span>
+          </Link>
+
+          <button
+            type="button"
+            disabled={unavailable}
+            onClick={addToCart}
+          >
+            {unavailable
+              ? "Out of stock"
+              : "Add to basket"}
+
+            {!unavailable && (
+              <span>
+                ＋
+              </span>
+            )}
+          </button>
         </div>
       </div>
     </article>
