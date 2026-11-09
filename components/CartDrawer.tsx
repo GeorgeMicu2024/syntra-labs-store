@@ -7,6 +7,7 @@ import { useAuth } from "./AuthProvider";
 import { displayProductName } from "@/lib/display";
 import { getBrowserSupabase } from "@/lib/supabase/client";
 import { getDispatchState } from "@/lib/shipping";
+import { isInstitutionalEmail } from "@/lib/institutional-email";
 
 export default function CartDrawer() {
   const { items, total, setQty, remove } = useCart();
@@ -22,6 +23,10 @@ export default function CartDrawer() {
   const [useCredit, setUseCredit] = useState(false);
   const [dispatch, setDispatch] = useState(() =>
     getDispatchState()
+  );
+
+  const institutionalAccess = Boolean(
+    user?.email && user.email_confirmed_at && isInstitutionalEmail(user.email)
   );
 
   /*
@@ -43,11 +48,11 @@ export default function CartDrawer() {
    * Stripe pricing is calculated again securely
    * on the server in /api/checkout.
    */
-  const memberSavings = user
+  const memberSavings = institutionalAccess
     ? total * (discountPercent / 100)
     : 0;
 
-  const memberTotal = user
+  const memberTotal = institutionalAccess
     ? Math.max(0, total - memberSavings)
     : total;
 
@@ -64,7 +69,7 @@ export default function CartDrawer() {
    * independently verify this calculation.
    */
   const estimatedCredit =
-    user && useCredit
+    institutionalAccess && useCredit
       ? Math.min(
           availableCredit,
           Math.max(0, memberTotal - 0.5)
@@ -140,6 +145,10 @@ export default function CartDrawer() {
     }
 
     try {
+      if (!institutionalAccess) {
+        throw new Error("Checkout is only available after confirming and signing in with an eligible institutional email address.");
+      }
+
       setCheckingOut(true);
 
       const headers: Record<string, string> = {
@@ -377,7 +386,7 @@ export default function CartDrawer() {
                   user ? "active" : "guest"
                 }`}
               >
-                {user ? (
+                {institutionalAccess ? (
                   <>
                     <span>
                       MEMBER PRICING ACTIVE
@@ -397,21 +406,14 @@ export default function CartDrawer() {
                   </>
                 ) : (
                   <>
-                    <span>
-                      CREATE AN ACCOUNT
-                    </span>
+                    <span>VERIFIED INSTITUTIONAL ACCESS</span>
 
                     <strong>
-                      Unlock 20% off your first
-                      paid order
+                      Register or verify your institutional email
                     </strong>
 
                     <p>
-                      Returning registered
-                      customers receive 10%
-                      automatic member pricing
-                      on subsequent signed-in
-                      orders.
+                      Checkout is restricted to confirmed university, government and approved laboratory addresses. Gmail, Yahoo and other personal emails cannot be used.
                     </p>
 
                     <div>
@@ -605,7 +607,7 @@ export default function CartDrawer() {
 
             {/* MEMBER DISCOUNT */}
 
-            {user &&
+            {institutionalAccess &&
               discountPercent > 0 && (
                 <div className="cart-summary-row discount">
                   <span>
@@ -624,7 +626,7 @@ export default function CartDrawer() {
 
             {/* STORE CREDIT */}
 
-            {user &&
+            {institutionalAccess &&
               availableCredit > 0 && (
                 <label className="v10-credit-toggle">
                   <span>
@@ -697,15 +699,23 @@ export default function CartDrawer() {
 
             {/* CHECKOUT */}
 
+            {!institutionalAccess && (
+              <div className="cart-institution-notice" role="status">
+                <strong>Institutional verification required</strong>
+                <p>Use a verified university, government or approved laboratory email to continue to Stripe Checkout.</p>
+                <Link href="/account/register" onClick={() => setOpen(false)}>Verify institutional access</Link>
+              </div>
+            )}
+
             <button
               type="button"
               className="cart-checkout-button"
-              disabled={checkingOut}
+              disabled={checkingOut || !institutionalAccess}
               onClick={checkout}
             >
               {checkingOut
                 ? "Opening secure checkout…"
-                : "Secure checkout"}
+                : institutionalAccess ? "Secure institutional checkout" : "Verification required to checkout"}
             </button>
 
             {/* TRUST */}

@@ -686,6 +686,10 @@ main { min-height: 72vh; }
 .cart-summary-row.total strong { font-size: 23px; }
 .cart-checkout-button { width: 100%; min-height: 49px; margin-top: 17px; border: 0; border-radius: 10px; background: linear-gradient(135deg, #667eff, #4056d8); color: #fff; font-size: 11px; font-weight: 900; }
 .cart-checkout-button:disabled { opacity: .65; }
+.cart-institution-notice { margin-top: 15px; padding: 13px; border: 1px solid #46588b; border-radius: 10px; background: #111d37; }
+.cart-institution-notice strong { display: block; color: #e4ebff; font-size: 11px; }
+.cart-institution-notice p { margin: 6px 0 10px; color: #b8c6e4; font-size: 10px; line-height: 1.5; }
+.cart-institution-notice a { color: #b3c1ff; font-size: 10px; font-weight: 800; text-decoration: underline; }
 .checkout-trust-row { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 11px; }
 .checkout-trust-row span { color: #66758a; font-size: 7px; text-transform: uppercase; letter-spacing: .08em; }
 .mobile-cart-bar { display: none; }

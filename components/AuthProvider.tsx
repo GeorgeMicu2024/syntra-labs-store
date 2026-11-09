@@ -11,6 +11,7 @@ import {
 } from "react";
 import type { User } from "@supabase/supabase-js";
 import { getBrowserSupabase } from "@/lib/supabase/client";
+import { isInstitutionalEmail } from "@/lib/institutional-email";
 
 export type CustomerProfile = {
   id: string;
@@ -125,9 +126,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const paidOrders = rewards?.paid_order_count || 0;
-  const discountPercent = user ? (paidOrders > 0 ? 10 : 20) : 0;
-  const discountLabel = !user
-    ? "Guest pricing"
+  const eligibleInstitution = Boolean(user?.email && user.email_confirmed_at && isInstitutionalEmail(user.email));
+  const discountPercent = eligibleInstitution ? (paidOrders > 0 ? 10 : 20) : 0;
+  const discountLabel = !eligibleInstitution
+    ? "Institutional email verification required"
     : paidOrders > 0
       ? "Returning customer · 10% loyalty pricing"
       : "New member · 20% first-order benefit";
