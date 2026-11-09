@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getBrowserSupabase } from "@/lib/supabase/client";
+import { isInstitutionalEmail } from "@/lib/institutional-email";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -25,6 +26,11 @@ export default function RegisterForm() {
     event.preventDefault();
     setError("");
     setMessage("");
+
+    if (!isInstitutionalEmail(form.email)) {
+      setError("Registration is limited to institutional email addresses (.edu, .gov, .ac.uk, .gov.uk or an approved laboratory domain). Personal email addresses cannot be used.");
+      return;
+    }
 
     if (form.password.length < 8) {
       setError("Use at least 8 characters for your password.");
@@ -64,13 +70,13 @@ export default function RegisterForm() {
     }
 
     if (data.session) {
-      window.dispatchEvent(new CustomEvent("syntra:toast", { detail: "Account created. Your 20% first-order benefit is active." }));
+      window.dispatchEvent(new CustomEvent("syntra:toast", { detail: "Account created. Verify your institutional email before checkout." }));
       router.push("/account");
       router.refresh();
       return;
     }
 
-    setMessage("Account created. Check your email to confirm your address, then sign in to activate your 20% first-order member pricing.");
+    setMessage("Check your institutional inbox for the confirmation link. Once verified, sign in to access checkout and your first-order member pricing.");
   }
 
   return (
@@ -79,7 +85,7 @@ export default function RegisterForm() {
         <label>First name<input required autoComplete="given-name" value={form.firstName} onChange={(e) => update("firstName", e.target.value)} /></label>
         <label>Last name<input required autoComplete="family-name" value={form.lastName} onChange={(e) => update("lastName", e.target.value)} /></label>
       </div>
-      <label>Email address<input type="email" required autoComplete="email" value={form.email} onChange={(e) => update("email", e.target.value)} placeholder="you@example.com" /></label>
+      <label>Verified institutional email address<input type="email" required autoComplete="email" value={form.email} onChange={(e) => update("email", e.target.value)} placeholder="researcher@university.ac.uk" /><small>University, government or manually approved laboratory domains only. Personal email providers are not accepted.</small></label>
       <div className="auth-two-col">
         <label>Password<input type="password" required minLength={8} autoComplete="new-password" value={form.password} onChange={(e) => update("password", e.target.value)} /></label>
         <label>Confirm password<input type="password" required minLength={8} autoComplete="new-password" value={form.confirm} onChange={(e) => update("confirm", e.target.value)} /></label>

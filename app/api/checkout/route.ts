@@ -7,6 +7,7 @@ import {
   getUserFromRequest,
 } from "@/lib/supabase/server-auth";
 import { getDispatchState } from "@/lib/shipping";
+import { isInstitutionalEmail } from "@/lib/institutional-email";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -37,6 +38,32 @@ type SavedAddress = {
 
 export async function POST(req: Request) {
   try {
+    // Deny unauthenticated/public-email checkout before loading products,
+    // reading discounts or creating any Stripe resources.
+    const user = await getUserFromRequest(req);
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Institutional checkout requires a signed-in, email-verified account. Please register or sign in." },
+        { status: 401 }
+      );
+    }
+
+    const institutionalEmail = user.email?.trim().toLowerCase() || "";
+    if (!isInstitutionalEmail(institutionalEmail)) {
+      return NextResponse.json(
+        { error: "Only verified university, government and approved laboratory email addresses can be used for checkout." },
+        { status: 403 }
+      );
+    }
+
+    if (!user.email_confirmed_at) {
+      return NextResponse.json(
+        { error: "Please confirm your institutional email using the link we sent before starting checkout." },
+        { status: 403 }
+      );
+    }
+
     /*
      * -------------------------------------------------------
      * STRIPE CONFIG
@@ -84,9 +111,6 @@ export async function POST(req: Request) {
      * AUTH
      * -------------------------------------------------------
      */
-
-    const user =
-      await getUserFromRequest(req);
 
     const admin =
       getAdminSupabase();
@@ -268,56 +292,6 @@ export async function POST(req: Request) {
 
         /*
          * ---------------------------------------------------
-         * CREATE STRIPE CUSTOMER IF NEEDED
-         * ---------------------------------------------------
-         */
-
-        if (!stripeCustomerId) {
-          const customer =
-            await stripe.customers.create({
-              email:
-                user.email || undefined,
-
-              name:
-                profileName || undefined,
-
-              phone:
-                profilePhone || undefined,
-
-              metadata: {
-                syntra_user_id:
-                  user.id,
-              },
-            });
-
-          stripeCustomerId =
-            customer.id;
-
-          const updateResult =
-            await admin
-              .from("customer_rewards")
-              .update({
-                stripe_customer_id:
-                  customer.id,
-
-                updated_at:
-                  new Date().toISOString(),
-              })
-              .eq(
-                "user_id",
-                user.id
-              );
-
-          if (updateResult.error) {
-            console.error(
-              "STRIPE_CUSTOMER_ID_SAVE_ERROR:",
-              updateResult.error
-            );
-          }
-        }
-
-        /*
-         * ---------------------------------------------------
          * UPDATE STRIPE CUSTOMER ADDRESS
          * ---------------------------------------------------
          */
@@ -392,6 +366,43 @@ export async function POST(req: Request) {
           "SUPABASE_ADMIN_NOT_CONFIGURED:",
           "Authenticated customer detected, but admin Supabase client is unavailable."
         );
+      }
+    }
+
+    /*
+     * A Stripe Customer with a validated email locks the email field
+     * in hosted Checkout. Never fall back to guest checkout or an
+     * editable customer_email field.
+     *
+     * Keep existing Stripe customers in sync with the *verified*
+     * Supabase Auth email, not an old customer email on file.
+     */
+    if (stripeCustomerId) {
+      await stripe.customers.update(stripeCustomerId, {
+        email: institutionalEmail,
+      });
+    } else {
+      const customer = await stripe.customers.create({
+        email: institutionalEmail,
+        name: profileName || undefined,
+        phone: profilePhone || undefined,
+        metadata: { syntra_user_id: user.id },
+      });
+
+      stripeCustomerId = customer.id;
+
+      if (admin) {
+        const { error: saveCustomerError } = await admin
+          .from("customer_rewards")
+          .update({
+            stripe_customer_id: customer.id,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("user_id", user.id);
+
+        if (saveCustomerError) {
+          console.error("STRIPE_CUSTOMER_ID_SAVE_ERROR:", saveCustomerError);
+        }
       }
     }
 
@@ -787,6 +798,9 @@ export async function POST(req: Request) {
 
           dispatch_window:
             dispatch.label,
+
+          institutional_email_verified:
+            "true",
         },
 
         expires_at:
@@ -797,7 +811,7 @@ export async function POST(req: Request) {
 
         after_expiration: {
           recovery: {
-            enabled: true,
+            enabled: false,
           },
         },
       };
@@ -820,25 +834,12 @@ export async function POST(req: Request) {
      * Stripe customer.
      */
 
-    if (stripeCustomerId) {
-      sessionParams.customer =
-        stripeCustomerId;
-
-      sessionParams.customer_update =
-        {
-          address: "auto",
-          name: "auto",
-          shipping: "auto",
-        };
-    } else {
-      sessionParams.customer_creation =
-        "always";
-
-      if (user?.email) {
-        sessionParams.customer_email =
-          user.email;
-      }
-    }
+    sessionParams.customer = stripeCustomerId;
+    sessionParams.customer_update = {
+      address: "auto",
+      name: "auto",
+      shipping: "auto",
+    };
 
     /*
      * -------------------------------------------------------
