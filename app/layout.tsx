@@ -19,6 +19,8 @@ import { AuthProvider } from "@/components/AuthProvider";
 import { WishlistProvider } from "@/components/WishlistProvider";
 import ShippingStatusBar from "@/components/ShippingStatusBar";
 import MembershipOffer from "@/components/MembershipOffer";
+import AutumnThemeController from "@/components/AutumnThemeController";
+import { isAutumnCampaignActive } from "@/lib/autumn-campaign";
 import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -35,9 +37,11 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { themeColor: "#050914", colorScheme: "dark" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const autumnEnabled = process.env.AUTUMN_CAMPAIGN_ENABLED !== "false";
   return (
-    <html lang="en">
+    <html lang="en" className={isAutumnCampaignActive() ? "autumn-site" : undefined}>
       <body>
+        <AutumnThemeController enabled={autumnEnabled} />
         <AuthProvider>
           <WishlistProvider>
           <CartProvider>

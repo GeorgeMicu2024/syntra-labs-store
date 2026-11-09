@@ -1,4 +1,4 @@
-/* Autumn Research Edition — a visual layer for Home and Offers only. */
+/* Autumn Research Edition — seasonal visuals, without changing checkout or prices. */
 .autumn-hero {
   overflow: hidden;
   background:
@@ -166,4 +166,268 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .autumn-leaf { display: none; animation: none !important; }
+}
+
+/* ===========================================================
+   AUTUMN ACROSS SYNTRA — 9–30 November 2026
+   Enabled via html.autumn-site; all other months retain the
+   original blue design. Scope every override to that class.
+   =========================================================== */
+html.autumn-site {
+  color-scheme: dark;
+  --bg: #0a090b;
+  --bg-deep: #07080a;
+  --panel: #17130f;
+  --panel-2: #201914;
+  --panel-3: #2a2119;
+  --line: #56402c;
+  --line-soft: rgba(195, 139, 85, .24);
+  --muted: #b4a392;
+  --muted-2: #927c6a;
+  --blue: #ca8c55;
+  --blue-2: #a96537;
+  --blue-soft: #e8b77a;
+  --amber: #edb776;
+  --v6-blue: #cb8c56;
+  --v6-blue-bright: #edb97a;
+  --v6-blue-deep: #a86a3e;
+  --v6-cyan: #e4b37b;
+  --v6-panel: #19140f;
+  --v6-panel-2: #221a14;
+  --v6-line: #594431;
+  --v7-bg: #0a090c;
+  --v7-panel: #18140f;
+  --v7-panel-2: #241b15;
+  --v7-line: #584431;
+  --v7-line-soft: rgba(199, 142, 87, .26);
+  --v7-muted: #b1a091;
+  --v7-blue: #daa266;
+  --v7-cyan: #e6b479;
+  --v8-blue: #d39a60;
+  --v8-blue-bright: #e9bb83;
+  --v8-cyan: #e5b47d;
+  --v8-ink: #0a090b;
+  --v8-panel: #1a1511;
+  --v8-panel-2: #241b15;
+  --v8-line: rgba(202, 147, 88, .28);
+  --v8-muted: #b1a08d;
+  --v9-indigo: #d49a60;
+  --v9-indigo-bright: #f1bf87;
+  --v9-cyan: #e9b881;
+  --v9-ink: #0a090b;
+  --v9-panel: #19140f;
+  --v9-panel-2: #251a14;
+  --v9-line: rgba(202, 147, 88, .29);
+  --v9-muted: #ad9c8c;
+}
+
+html.autumn-site body {
+  background:
+    radial-gradient(ellipse at 82% 3%, rgba(153, 87, 41, .19), transparent 34%),
+    radial-gradient(ellipse at 5% 44%, rgba(112, 66, 32, .09), transparent 43%),
+    linear-gradient(180deg, #0b0c12 0%, #100e10 52%, #090a0d 100%);
+}
+html.autumn-site ::selection { background: rgba(219, 157, 91, .35); color: #fff7e9; }
+html.autumn-site :is(.kicker, .eyebrow) { color: #edb980; }
+html.autumn-site :is(h1, h2, h3) em { color: #e8b577; }
+html.autumn-site :is(.text-link span, .v6-section-stats i) { color: #efbd83; }
+
+/* Atmospheric leaves are decorative and never intercept taps. */
+.autumn-global-leaves {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  opacity: .27;
+  overflow: hidden;
+  pointer-events: none;
+  contain: layout paint;
+}
+.autumn-global-leaves .autumn-leaf:nth-child(n+7) { display: none; }
+.autumn-global-leaves .autumn-leaf {
+  animation-name: autumnLeafFallPage;
+  filter: drop-shadow(0 3px 4px rgba(151, 84, 40, .18));
+}
+@keyframes autumnLeafFallPage {
+  0% { opacity: 0; transform: translate3d(0, -30px, 0) rotate(-35deg); }
+  12% { opacity: .36; }
+  86% { opacity: .30; }
+  100% { opacity: 0; transform: translate3d(var(--autumn-drift), 100dvh, 0) rotate(410deg); }
+}
+
+/* All-site navigation and operational chrome. */
+.autumn-site .research-ticker {
+  border-color: rgba(184, 126, 70, .26);
+  background: linear-gradient(90deg, #150f0c, #24170e 49%, #150f0c);
+}
+.autumn-site .research-ticker-track > span { color: #bda78e; }
+.autumn-site .research-ticker-track i { box-shadow: 0 0 11px rgba(214, 145, 70, .54); }
+.autumn-site .premium-header {
+  background: rgba(16, 13, 14, .94);
+  border-bottom-color: rgba(188, 125, 65, .38);
+  box-shadow: 0 16px 38px rgba(21, 9, 3, .29);
+}
+.autumn-site .premium-header::after { background: linear-gradient(90deg, transparent, rgba(227, 156, 78, .54), transparent); }
+.autumn-site .brandmark {
+  border-color: #bc7b46;
+  background: linear-gradient(145deg, #503322, #231912);
+  color: #fff2e0;
+  box-shadow: inset 0 1px rgba(255, 231, 197, .14), 0 8px 26px rgba(112, 57, 25, .26);
+}
+.autumn-site .brand small,
+.autumn-site .desktop-nav a[href="/offers"] { color: #efbb80; }
+.autumn-site .desktop-nav a { color: #c6b8a8; }
+.autumn-site .desktop-nav a:is(:hover, .active) { color: #ffe4c0; }
+.autumn-site :is(.header-search, .header-cart, .mobile-menu-button, .header-account) {
+  border-color: #56412e;
+  background: #201912;
+  color: #f4e9dc;
+}
+.autumn-site :is(.header-search, .header-cart, .header-account):hover { border-color: #d2955e; background: #302117; }
+.autumn-site .cart-count { background: linear-gradient(135deg, #e5ae6e, #ad6638); color: #1f120d; }
+.autumn-site .mobile-navigation {
+  background: linear-gradient(155deg, #241910, #0f0e10 77%);
+  border-color: #634730;
+}
+.autumn-site .mobile-navigation a.active { color: #f4c48c; }
+.autumn-site .shipping-status-bar {
+  border-bottom-color: rgba(195, 135, 80, .27);
+  background: linear-gradient(90deg, #130f0d, #2a1b13 50%, #130f0d);
+  color: #bfaa94;
+}
+.autumn-site .shipping-status-bar strong { color: #f8ddbd; }
+.autumn-site .shipping-status-divider { background: #67452c; }
+
+/* Reusable buttons and interactive elements. */
+.autumn-site :is(.button-primary, .button.primary, .auth-submit, .account-form > button, .account-form-actions button, .cart-checkout-button) {
+  border-color: #ce9561;
+  background: linear-gradient(135deg, #e5ad73, #b87843);
+  box-shadow: 0 14px 30px rgba(143, 78, 34, .22);
+  color: #20140d;
+}
+.autumn-site :is(.button-primary, .button.primary, .cart-checkout-button):hover { box-shadow: 0 19px 42px rgba(143, 78, 34, .32); }
+.autumn-site :is(.button-secondary, .v6-view-details) {
+  border-color: #66503a;
+  background: #221a15;
+  color: #e4ccaf;
+}
+.autumn-site :is(.button-secondary, .v6-view-details):hover { border-color: #bf8b58; background: #30221a; }
+.autumn-site :is(input, textarea, select):focus-visible { outline-color: #d59d68; }
+
+/* The specific mobile cards shown in customer screenshots. */
+.autumn-site .membership-section-copy,
+.autumn-site .v7-intelligence-copy {
+  border-color: #6a4a30;
+  background:
+    radial-gradient(ellipse at 10% 7%, rgba(196, 119, 53, .2), transparent 46%),
+    linear-gradient(145deg, #211912, #111216 86%);
+  box-shadow: inset 0 1px rgba(255, 216, 160, .06);
+}
+.autumn-site .membership-section-copy p,
+.autumn-site .v7-intelligence-copy p { color: #beac9a; }
+.autumn-site .membership-benefit-card,
+.autumn-site .v7-intelligence-grid article {
+  border-color: #55402e;
+  background: linear-gradient(145deg, #251a13, #141215 83%);
+}
+.autumn-site .membership-benefit-card.feature {
+  border-color: #a47142;
+  background:
+    radial-gradient(circle at 84% 10%, rgba(213, 143, 67, .25), transparent 43%),
+    linear-gradient(145deg, #322013, #171416);
+}
+.autumn-site .membership-benefit-card.active-member { border-color: #8e714d; background: linear-gradient(145deg, #292318, #151513); }
+.autumn-site .membership-benefit-card span,
+.autumn-site .v7-intelligence-grid small { color: #c1986c; }
+.autumn-site .membership-benefit-card strong,
+.autumn-site .v7-intelligence-grid strong { color: #fff1de; }
+.autumn-site .membership-benefit-card p,
+.autumn-site .v7-intelligence-grid span { color: #aa9581; }
+.autumn-site .v7-intelligence-actions a { border-color: #66503c; color: #e5c8a4; }
+.autumn-site .v7-intelligence-actions a:first-child { border-color: #c38c59; background: #472c1d; color: #ffe1b9; }
+.autumn-site .return-visit-card {
+  border-color: #835837;
+  background: linear-gradient(110deg, rgba(60, 38, 24, .96), rgba(23, 19, 19, .97));
+}
+.autumn-site .return-visit-pulse { border-color: #a0734a; background: #3b271b; }
+.autumn-site .return-visit-card small { color: #f0b97d; }
+.autumn-site .return-visit-card p { color: #b39d86; }
+.autumn-site .return-visit-card > a { border-color: #a7754a; background: #2d2119; color: #f7ddbd; }
+.autumn-site .return-visit-card > a span { color: #f1b77a; }
+.autumn-site .v6-section-stats > :is(a, span) { border-color: #614630; background: #221912; color: #c3ae98; }
+.autumn-site .v6-section-stats > a { border-color: #a16d43; color: #f6d6ac; }
+
+/* Product catalogue: warm frames, natural metallic offer accents. */
+.autumn-site .v6-product-card,
+.autumn-site .v8-product-card {
+  border-color: rgba(159, 111, 67, .43);
+  background: linear-gradient(180deg, #211911, #100f13);
+}
+.autumn-site .v8-product-card::before { background: linear-gradient(135deg, rgba(221, 146, 74, .14), transparent 49%); }
+.autumn-site .v8-product-card:hover,
+.autumn-site .v6-product-card:hover { border-color: #d5a36e; box-shadow: 0 26px 64px rgba(72, 35, 13, .24); }
+.autumn-site .v7-product-card::after { box-shadow: inset 0 0 0 1px rgba(226, 164, 94, .5); }
+.autumn-site .v8-product-visual {
+  background: radial-gradient(circle at 50% 42%, rgba(156, 103, 55, .24), transparent 38%), linear-gradient(180deg, #282016, #141318 85%);
+}
+.autumn-site .v6-product-visual { border-bottom-color: #6d4c31; }
+.autumn-site .v6-offer-ribbon { background: linear-gradient(95deg, #b8733e, #e1ad6a); color: #1d130d; box-shadow: 0 9px 24px rgba(148, 80, 32, .28); }
+.autumn-site .v6-product-heading > div > span,
+.autumn-site .v6-product-heading h3 a:hover { color: #e4ac74; }
+.autumn-site .v6-product-heading > small { border-color: #6b4d36; color: #d5a071; }
+.autumn-site .v6-highlight-grid i { border-color: #684a35; background: #2c211a; color: #e7ad74; }
+.autumn-site .v6-price-zone { border-top-color: #5b4331; }
+.autumn-site .v6-save-block :is(span, strong, small) { color: #ecb77c; }
+.autumn-site .v6-card-actions > button { background: linear-gradient(135deg, #daa16b, #ae6b3b); color: #21140b; box-shadow: 0 11px 28px rgba(152, 78, 30, .23); }
+.autumn-site .v6-shop-tools { border-color: #4e392a; background: rgba(30, 23, 19, .84); }
+.autumn-site .v6-quick-filters button { border-color: #604731; background: #241b17; color: #c4a98f; }
+.autumn-site .v6-quick-filters button.active { border-color: #d39b62; background: #4a2c1e; color: #ffe3bd; }
+.autumn-site .v7-quick-trigger { border-color: #91653f; background: rgba(34, 23, 17, .92); color: #e6bf95; }
+.autumn-site .v7-quick-trigger b { color: #efbd80; }
+
+/* Account, cart, research and dossier surfaces share the same season. */
+.autumn-site :is(.auth-card, .account-panel, .account-guest-hero, .member-offer-card, .cart-member-callout, .cart-shipping-callout, .v8-quick-panel, .v7-quick-panel, .v8-dossier-panel, .research-library-card, .research-feature-card, .research-review-card, .research-method-card, .research-evidence-card) {
+  border-color: rgba(170, 119, 71, .45);
+  background: radial-gradient(ellipse at 90% 3%, rgba(156, 96, 43, .12), transparent 44%), linear-gradient(145deg, #211911, #111217 86%);
+}
+.autumn-site :is(.auth-benefit-list span, .member-benefit-chips span, .v8-focus-list span) { border-color: #684d35; background: #241b16; color: #ceb49a; }
+.autumn-site :is(.auth-card-head, .cart-drawer-header, .cart-drawer-footer) { border-color: #604730; }
+.autumn-site .auth-form input:not([type="checkbox"]),
+.autumn-site .account-form input:not([type="checkbox"]) { border-color: #644b36; background: #1c1715; color: #f5e8d8; }
+.autumn-site .auth-form input:focus,
+.autumn-site .account-form input:focus { border-color: #d6a168; box-shadow: 0 0 0 3px rgba(218, 156, 87, .15); }
+.autumn-site .auth-consent input { accent-color: #c78a53; }
+.autumn-site :is(.auth-form-links a, .auth-card-foot a, .cart-member-callout a, .v8-reference-index, .v8-reference-list > a > b) { color: #e5ae78; }
+.autumn-site .member-offer-kicker { color: #e8b57b; }
+.autumn-site .member-offer-card h2 em { color: #f1bf84; }
+.autumn-site .member-offer-ops { border-color: #5e4632; background: linear-gradient(180deg, #2b1e16, #1a1717); }
+.autumn-site .cart-drawer { border-color: #694b35; background: #151314; }
+.autumn-site .cart-summary-row.discount,
+.autumn-site .cart-summary-row.discount strong { color: #efb77d; }
+.autumn-site :is(.v8-evidence-chip, .v8-quick-offer, .v8-dossier-boundary) { border-color: #916844; background: #332215; color: #efbd85; }
+.autumn-site .v8-dossier-tabs button.active { border-color: #c28c56; background: #422b1a; color: #ffe2b9; }
+.autumn-site .v8-evidence-scale .active :is(i, span) { color: #dfab76; }
+.autumn-site :is(.v8-literature-timeline i, .v8-evidence-scale .active:not(:last-child)::after) { background: linear-gradient(90deg, #b97942, #f2c48b); }
+.autumn-site .page-hero { border-color: #533c2b; background: radial-gradient(ellipse at 76% 12%, rgba(172, 99, 46, .14), transparent 44%), #111115; }
+.autumn-site .page-hero-facts span { border-color: #664c35; background: #261c16; color: #d6b694; }
+.autumn-site .footer { border-top-color: #523b2a; background: linear-gradient(180deg, #110f10, #090a0d); }
+.autumn-site .footer a:hover { color: #ecba80; }
+
+/* Mobile basket bar is especially visible: never leave it electric blue. */
+.autumn-site .mobile-cart-bar,
+.autumn-site .v8-mobile-product-bar {
+  border-color: #e6b781;
+  background: linear-gradient(115deg, #bc824c, #8c4e2b);
+  color: #fff1df;
+  box-shadow: 0 17px 44px rgba(66, 30, 11, .47);
+}
+.autumn-site .mobile-cart-bar b { background: rgba(60, 35, 20, .23); }
+
+@media (max-width: 720px) {
+  .autumn-global-leaves { opacity: .18; }
+  .autumn-global-leaves .autumn-leaf:nth-child(n+5) { display: none; }
+  .autumn-site .membership-section-copy,
+  .autumn-site .v7-intelligence-copy { box-shadow: inset 0 1px rgba(255, 216, 160, .09), 0 12px 37px rgba(62, 29, 12, .13); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .autumn-global-leaves { display: none; }
 }
