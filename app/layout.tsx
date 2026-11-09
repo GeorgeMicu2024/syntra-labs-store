@@ -5,6 +5,7 @@ import "./v7.css";
 import "./v8.css";
 import "./v9.css";
 import "./v10.css";
+import "./autumn.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";

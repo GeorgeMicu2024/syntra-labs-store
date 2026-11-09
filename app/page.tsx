@@ -8,13 +8,16 @@ import CatalogueIntelligence from "@/components/CatalogueIntelligence";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import MembershipSection from "@/components/MembershipSection";
 import { getProducts } from "@/lib/supabase-rest";
-import { hasDiscount, getStockState } from "@/lib/commerce";
+import { hasDiscount, getStockState, getSavings } from "@/lib/commerce";
+import { isAutumnCampaignActive } from "@/lib/autumn-campaign";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const products = await getProducts();
   const offerCount = products.filter(hasDiscount).length;
+  const topOfferPercent = Math.max(0, ...products.map((product) => getSavings(product)?.percent || 0));
+  const autumnActive = isAutumnCampaignActive() && topOfferPercent > 0;
   const lowStockCount = products.filter((product) => {
     const state = getStockState(product.stock);
     return state === "critical" || state === "low";
@@ -26,6 +29,8 @@ export default async function Home() {
         catalogueCount={products.length}
         inStockCount={products.filter((product) => product.stock > 0).length}
         categoryCount={new Set(products.map((product) => product.category)).size}
+        autumnActive={autumnActive}
+        topOfferPercent={topOfferPercent}
       />
       <ReturnVisitPrompt offerCount={offerCount} lowStockCount={lowStockCount} />
       <CatalogueIntelligence products={products} />
