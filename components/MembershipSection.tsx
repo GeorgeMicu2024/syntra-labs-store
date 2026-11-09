@@ -9,10 +9,10 @@ export default function MembershipSection() {
   return (
     <section className="membership-section">
       <div className="membership-section-copy">
-        <span className="kicker">SYNTRA MEMBER ACCESS</span>
-        <h2>Built for customers who return.</h2>
+        <span className="kicker">INSTITUTIONAL MEMBER ACCESS</span>
+        <h2>Built for returning institutions.</h2>
         <p>
-          Secure account access brings saved addresses, order history and automatic member pricing into one clean customer workspace.
+          One secure workspace for saved addresses, order history and automatic member pricing, accessible to verified institutional accounts.
         </p>
         <div className="membership-actions">
           {user ? (
@@ -24,6 +24,7 @@ export default function MembershipSection() {
             </>
           )}
         </div>
+        <div className="premium-v2-verified-note"><span aria-hidden="true">✧</span> Verified institutional email required for checkout</div>
       </div>
 
       <div className="membership-benefit-grid">

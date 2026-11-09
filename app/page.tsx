@@ -1,10 +1,7 @@
 import ParallaxHero from "@/components/ParallaxHero";
 import HomeFeatured from "@/components/HomeFeatured";
 import CategoryExplorer from "@/components/CategoryExplorer";
-import HomeResearch from "@/components/HomeResearch";
-import StandardsShowcase from "@/components/StandardsShowcase";
 import ReturnVisitPrompt from "@/components/ReturnVisitPrompt";
-import CatalogueIntelligence from "@/components/CatalogueIntelligence";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import MembershipSection from "@/components/MembershipSection";
 import { getProducts } from "@/lib/supabase-rest";
@@ -24,7 +21,7 @@ export default async function Home() {
   }).length;
 
   return (
-    <div className="premium-home v6-home v7-home">
+    <div className="premium-home v6-home v7-home premium-v2-home">
       <ParallaxHero
         catalogueCount={products.length}
         inStockCount={products.filter((product) => product.stock > 0).length}
@@ -33,22 +30,19 @@ export default async function Home() {
         topOfferPercent={topOfferPercent}
       />
       <ReturnVisitPrompt offerCount={offerCount} lowStockCount={lowStockCount} />
-      <CatalogueIntelligence products={products} />
-      <MembershipSection />
       <HomeFeatured products={products} />
-      <RecentlyViewed products={products} />
       <CategoryExplorer />
-      <HomeResearch />
-      <StandardsShowcase />
-      <section className="home-final-cta v6-final-cta v7-final-cta">
-        <div>
-          <span className="kicker">LIVE CATALOGUE · UK</span>
-          <h2>A research storefront designed to reward a second look.</h2>
-          <p>Return for live stock, current offers, recently viewed materials and evidence-stage research notes. Catalogue availability changes by batch.</p>
+      <MembershipSection />
+      <RecentlyViewed products={products} compact />
+      <section className="premium-v2-why" aria-labelledby="premium-v2-why-title">
+        <div className="premium-v2-why-heading">
+          <span className="kicker">WHY SYNTRA LABS</span>
+          <h2 id="premium-v2-why-title">Considered down to the details.</h2>
         </div>
-        <div className="home-final-actions">
-          <a href="/offers" className="button-primary">Current offers <span>→</span></a>
-          <a href="/shop" className="button-secondary">Full catalogue</a>
+        <div className="premium-v2-why-grid">
+          <div><span aria-hidden="true">01 /</span><h3>Live UK stock</h3><p>Current catalogue availability and pricing displayed clearly on every item.</p></div>
+          <div><span aria-hidden="true">02 /</span><h3>Research context</h3><p>Product identity and literature context kept separate from commercial information.</p></div>
+          <div><span aria-hidden="true">03 /</span><h3>Secure checkout</h3><p>Server-side pricing through Stripe, with verified institutional access.</p></div>
         </div>
       </section>
     </div>

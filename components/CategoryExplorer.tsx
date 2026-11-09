@@ -13,14 +13,14 @@ export default function CategoryExplorer() {
     <section className="home-section category-section">
       <div className="section-heading-row compact">
         <div>
-          <span className="kicker">EXPLORE BY FIELD</span>
-          <h2>Navigate the catalogue by research class.</h2>
+          <span className="kicker">FIND YOUR FIELD</span>
+          <h2>Explore by research field.</h2>
         </div>
       </div>
       <div className="category-grid">
         {categories.map((category, index) => (
           <Link href={`/shop?category=${encodeURIComponent(category.name)}`} className="category-card" key={category.name}>
-            <span className="category-index">0{index + 1}</span>
+            <span className="category-index">0{index + 1} <span aria-hidden="true">✦</span></span>
             <div>
               <small>{category.code}</small>
               <h3>{category.name}</h3>
