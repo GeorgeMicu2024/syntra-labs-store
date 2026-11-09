@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Product } from "@/lib/products";
 import { hasDiscount } from "@/lib/commerce";
-import ProductCard from "./ProductCard";
+import PremiumProductCard from "./PremiumProductCard";
 
 export default function HomeFeatured({ products }: { products: Product[] }) {
   const selected = [...products]
@@ -21,10 +21,10 @@ export default function HomeFeatured({ products }: { products: Product[] }) {
     <section className="home-section v6-offers-section" id="live-offers">
       <div className="v6-section-head">
         <div>
-          <span className="kicker">LIVE OFFERS & AVAILABILITY</span>
-          <h2>Current catalogue highlights.</h2>
+          <span className="kicker">CURATED FROM THE LIVE CATALOGUE</span>
+          <h2>Selected research materials.</h2>
           <p>
-            Live price and stock from the active catalogue, with offer savings shown against earlier catalogue pricing.
+            Current prices and availability, updated from our active catalogue.
           </p>
         </div>
 
@@ -37,7 +37,7 @@ export default function HomeFeatured({ products }: { products: Product[] }) {
 
       <div className="v6-featured-grid">
         {selected.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <PremiumProductCard key={product.id} product={product} />
         ))}
       </div>
     </section>
