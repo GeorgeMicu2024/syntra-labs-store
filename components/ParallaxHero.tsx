@@ -2,14 +2,17 @@
 
 import Link from "next/link";
 import { useRef } from "react";
+import AutumnLeaves from "@/components/AutumnLeaves";
 
 type Props = {
   catalogueCount: number;
   inStockCount: number;
   categoryCount: number;
+  autumnActive: boolean;
+  topOfferPercent: number;
 };
 
-export default function ParallaxHero({ catalogueCount, inStockCount, categoryCount }: Props) {
+export default function ParallaxHero({ catalogueCount, inStockCount, categoryCount, autumnActive, topOfferPercent }: Props) {
   const frame = useRef<HTMLElement>(null);
 
   function handleMove(event: React.MouseEvent<HTMLElement>) {
@@ -28,25 +31,35 @@ export default function ParallaxHero({ catalogueCount, inStockCount, categoryCou
   }
 
   return (
-    <section className="home-hero v5-hero" ref={frame} onMouseMove={handleMove} onMouseLeave={reset}>
+    <section className={`home-hero v5-hero${autumnActive ? " autumn-hero" : ""}`} ref={frame} onMouseMove={handleMove} onMouseLeave={reset}>
+      {autumnActive && <AutumnLeaves />}
       <div className="hero-aurora hero-aurora-one" />
       <div className="hero-aurora hero-aurora-two" />
 
       <div className="home-hero-grid">
         <div className="home-hero-copy">
           <div className="hero-status"><span /> SYNTRA LABS · LIVE UK CATALOGUE</div>
+          {autumnActive && <div className="autumn-edition-label"><span className="autumn-edition-mark">✦</span> AUTUMN RESEARCH EDITION <span className="autumn-edition-date">NOVEMBER 2026</span></div>}
           <h1>
-            Precision research<br />
-            <span>starts with clarity.</span>
+            {autumnActive ? <><span className="autumn-heading-plain">A new season</span><br /><span>for research.</span></> : <>Precision research<br /><span>starts with clarity.</span></>}
           </h1>
           <p>
-            A UK-focused laboratory catalogue combining live stock, current offer pricing, controlled product identity, concise research context and secure server-side checkout.
+            {autumnActive
+              ? "Explore the autumn edition of our existing research catalogue offers, with live UK stock, clear compound context and protected institutional checkout."
+              : "A UK-focused laboratory catalogue combining live stock, current offer pricing, controlled product identity, concise research context and secure server-side checkout."}
           </p>
 
           <div className="home-hero-actions">
-            <Link href="/offers" className="button-primary hero-primary">View current offers <span>→</span></Link>
+            <Link href="/offers" className="button-primary hero-primary">{autumnActive ? "Explore autumn offers" : "View current offers"} <span>→</span></Link>
             <Link href="/shop" className="button-secondary">Full catalogue</Link>
           </div>
+
+          {autumnActive && (
+            <div className="autumn-hero-offer" aria-label={`Selected existing catalogue offers up to ${topOfferPercent}% off`}>
+              <div className="autumn-hero-saving"><span>UP TO</span><strong>{topOfferPercent}%</strong><span>OFF</span></div>
+              <div className="autumn-hero-offer-copy"><strong>Selected catalogue materials</strong><span>Existing offer prices · Verified institutional access only</span></div>
+            </div>
+          )}
 
           <div className="hero-live-metrics" aria-label="Live catalogue metrics">
             <div><strong>{catalogueCount}</strong><span>Catalogue items</span></div>
