@@ -126,8 +126,13 @@ export async function POST(request: Request) {
     if (error) {
       // Never write passwords, emails, keys or full upstream errors to logs.
       console.error("Syntra registration provider error", { code: error.code, status: error.status });
-      if (error.status === 429) {
-        return json({ error: "Too many attempts. Please try again later." }, 429);
+      if (error.code === "email_address_not_authorized") {
+        return json({
+          error: "Email confirmations cannot be delivered to this address until Syntra Labs enables custom SMTP in Supabase.",
+        }, 503);
+      }
+      if (error.status === 429 || error.code === "over_email_send_rate_limit") {
+        return json({ error: "Too many email attempts. Please try again later." }, 429);
       }
       if (error.status === 400 || error.status === 422) {
         return json({ error: error.message }, 400);
@@ -145,7 +150,7 @@ export async function POST(request: Request) {
     }
 
     return json({
-      message: "If registration is eligible, a confirmation link will arrive at your institutional email. Confirm the link, then sign in to access checkout.",
+      message: "Registration request accepted. A confirmation email may be sent if delivery is enabled. Check your inbox and Junk / Spam, or use Resend confirmation below. Do not assume your account is verified until you open the confirmation link.",
     }, 200);
   } catch {
     console.error("Syntra registration request failed before receiving a provider response");
