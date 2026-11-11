@@ -20,7 +20,7 @@ export async function GET() {
   const results = await Promise.all(tables.map(async (table) => {
     try {
       const response = await fetch(
-        `${origin}/rest/v1/${table}?select=id&limit=1`,
+        `${origin}/rest/v1/${table}?select=*&limit=0`,
         { headers: { apikey: key, Accept: "application/json" },
           cache: "no-store", signal: AbortSignal.timeout(6000) }
       );
