@@ -54,7 +54,12 @@ export async function GET() {
     const errorName = error instanceof Error ? error.name : "unknown";
     // Only record the failure category, never the provider URL or keys.
     console.error("Syntra Auth health request failed", { errorName, code });
-    return json({ ready: false, reason: "provider_unreachable" }, 503);
+    const category = ["ENOTFOUND", "EAI_AGAIN"].includes(code)
+      ? "dns_failure"
+      : ["ETIMEDOUT", "UND_ERR_CONNECT_TIMEOUT"].includes(code) || errorName === "TimeoutError"
+      ? "connection_timeout"
+      : "connection_failed";
+    return json({ ready: false, reason: "provider_unreachable", category }, 503);
   }
 }
 
