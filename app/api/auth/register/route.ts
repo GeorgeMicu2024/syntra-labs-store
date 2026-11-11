@@ -46,7 +46,14 @@ export async function GET() {
       { ready: response.ok, providerStatus: response.status },
       response.ok ? 200 : 503
     );
-  } catch {
+  } catch (error) {
+    const cause = error && typeof error === "object" && "cause" in error
+      ? error.cause as { code?: unknown } | null
+      : null;
+    const code = typeof cause?.code === "string" ? cause.code : "unknown";
+    const errorName = error instanceof Error ? error.name : "unknown";
+    // Only record the failure category, never the provider URL or keys.
+    console.error("Syntra Auth health request failed", { errorName, code });
     return json({ ready: false, reason: "provider_unreachable" }, 503);
   }
 }
