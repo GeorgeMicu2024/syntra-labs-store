@@ -2,12 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { getBrowserSupabase } from "@/lib/supabase/client";
 import { isInstitutionalEmail } from "@/lib/institutional-email";
 
 export default function RegisterForm() {
-  const router = useRouter();
   const [form, setForm] = useState({ firstName: "", lastName: "", email: "", password: "", confirm: "", marketing: false, referral: "" });
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -41,42 +38,31 @@ export default function RegisterForm() {
       return;
     }
 
-    const supabase = getBrowserSupabase();
-    if (!supabase) {
-      setError("Customer accounts are not configured yet. Add the Supabase public key to your environment variables.");
-      return;
-    }
-
     setBusy(true);
-    const redirect = `${window.location.origin}/account`;
-    const { data, error: signUpError } = await supabase.auth.signUp({
-      email: form.email,
-      password: form.password,
-      options: {
-        emailRedirectTo: redirect,
-        data: {
-          first_name: form.firstName.trim(),
-          last_name: form.lastName.trim(),
-          marketing_opt_in: form.marketing,
-          referral_code: form.referral.trim().toUpperCase() || undefined,
-        },
-      },
-    });
-    setBusy(false);
-
-    if (signUpError) {
-      setError(signUpError.message);
-      return;
+    try {
+      // Same-origin request avoids Safari's intermittent cross-origin
+      // "Load failed" on Supabase Auth. Passwords are never logged or stored.
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        cache: "no-store",
+        body: JSON.stringify(form),
+      });
+      const result: { error?: string; message?: string } = await response
+        .json()
+        .catch(() => ({}));
+      if (!response.ok) {
+        setError(result.error || "Registration is temporarily unavailable. Please try again later.");
+        return;
+      }
+      setForm((current) => ({ ...current, password: "", confirm: "" }));
+      setMessage(result.message || "Please check your institutional inbox for an email confirmation link.");
+    } catch {
+      setError("Unable to reach Syntra Labs. Check your connection and try again.");
+    } finally {
+      setBusy(false);
     }
-
-    if (data.session) {
-      window.dispatchEvent(new CustomEvent("syntra:toast", { detail: "Account created. Verify your institutional email before checkout." }));
-      router.push("/account");
-      router.refresh();
-      return;
-    }
-
-    setMessage("Check your institutional inbox for the confirmation link. Once verified, sign in to access checkout and your first-order member pricing.");
   }
 
   return (
