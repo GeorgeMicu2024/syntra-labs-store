@@ -64,6 +64,27 @@ export async function POST(req: Request) {
       );
     }
 
+    // Never collect a payment if the database cannot persist its order.
+    // This store requires service-role access for the Stripe webhook.
+    const admin = getAdminSupabase();
+    if (!admin) {
+      console.error("CHECKOUT_DISABLED: Supabase admin key is missing");
+      return NextResponse.json(
+        { error: "Checkout is temporarily unavailable while order processing is being configured. No payment has been taken." },
+        { status: 503 }
+      );
+    }
+    const { error: dbError } = await admin
+      .from("orders")
+      .select("id", { head: true });
+    if (dbError) {
+      console.error("CHECKOUT_DISABLED: Supabase orders unavailable", { code: dbError.code });
+      return NextResponse.json(
+        { error: "Checkout is temporarily unavailable while order processing is being restored. No payment has been taken." },
+        { status: 503 }
+      );
+    }
+
     /*
      * -------------------------------------------------------
      * STRIPE CONFIG
@@ -112,8 +133,7 @@ export async function POST(req: Request) {
      * -------------------------------------------------------
      */
 
-    const admin =
-      getAdminSupabase();
+    // Database connection was verified before creating any Stripe resources.
 
     /*
      * -------------------------------------------------------
