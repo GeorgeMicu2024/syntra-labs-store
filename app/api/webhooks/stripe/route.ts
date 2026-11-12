@@ -21,6 +21,27 @@ export async function POST(req: Request) {
     const rawBody = await req.text();
     const event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
 
+    // Do not acknowledge paid orders if we cannot store them. A 503 tells
+    // Stripe to retry the webhook once the admin connection is restored.
+    if (
+      event.type === "checkout.session.completed" ||
+      event.type === "checkout.session.async_payment_succeeded" ||
+      event.type === "checkout.session.expired"
+    ) {
+      const adminForWrite = getAdminSupabase();
+      if (!adminForWrite) {
+        console.error("STRIPE_WEBHOOK_RETRY: Supabase admin client not configured");
+        return NextResponse.json({ error: "Order persistence unavailable" }, { status: 503 });
+      }
+      const { error: dbError } = await adminForWrite
+        .from("orders")
+        .select("id", { head: true });
+      if (dbError) {
+        console.error("STRIPE_WEBHOOK_RETRY: Orders database unavailable", { code: dbError.code });
+        return NextResponse.json({ error: "Order persistence unavailable" }, { status: 503 });
+      }
+    }
+
     if (event.type === "checkout.session.completed" || event.type === "checkout.session.async_payment_succeeded") {
       const session = event.data.object as Stripe.Checkout.Session;
       if (session.payment_status !== "paid") return NextResponse.json({ received: true });

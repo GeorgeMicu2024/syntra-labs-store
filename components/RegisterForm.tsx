@@ -9,6 +9,7 @@ export default function RegisterForm() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  const [resendBusy, setResendBusy] = useState(false);
 
   useEffect(() => {
     const referral = new URLSearchParams(window.location.search).get("ref") || "";
@@ -57,11 +58,41 @@ export default function RegisterForm() {
         return;
       }
       setForm((current) => ({ ...current, password: "", confirm: "" }));
-      setMessage(result.message || "Please check your institutional inbox for an email confirmation link.");
+      setMessage(result.message || "Registration request accepted. Check your inbox and spam folder, or use the resend button below.");
     } catch {
       setError("Unable to reach Syntra Labs. Check your connection and try again.");
     } finally {
       setBusy(false);
+    }
+  }
+
+  async function resendConfirmation() {
+    setError("");
+    setMessage("");
+    if (!isInstitutionalEmail(form.email)) {
+      setError("Enter your institutional email address above before requesting another confirmation.");
+      return;
+    }
+
+    setResendBusy(true);
+    try {
+      const response = await fetch("/api/auth/resend-confirmation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        cache: "no-store",
+        body: JSON.stringify({ email: form.email.trim() }),
+      });
+      const result: { error?: string; message?: string } = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        setError(result.error || "Unable to resend the confirmation right now.");
+        return;
+      }
+      setMessage(result.message || "Confirmation requested. Please check your inbox and spam folder.");
+    } catch {
+      setError("Could not contact the confirmation service. Please try again.");
+    } finally {
+      setResendBusy(false);
     }
   }
 
@@ -80,6 +111,10 @@ export default function RegisterForm() {
       <label className="auth-consent"><input type="checkbox" checked={form.marketing} onChange={(e) => update("marketing", e.target.checked)} /><span>Send me occasional catalogue, stock and offer updates. I can unsubscribe at any time.</span></label>
       {error && <div className="auth-error">{error}</div>}
       {message && <div className="auth-success">{message}</div>}
+      <p className="auth-smallprint">Not receiving your institutional confirmation email? Check Junk / Spam, then try the resend option below.</p>
+      <button className="auth-submit" type="button" disabled={busy || resendBusy} onClick={resendConfirmation}>
+        {resendBusy ? "Requesting confirmation…" : "Resend confirmation email"}
+      </button>
       <button className="auth-submit" type="submit" disabled={busy}>{busy ? "Creating account…" : "Create account & unlock 20%"}</button>
       <p className="auth-smallprint">The 20% welcome benefit is applied automatically to the first paid order completed while signed in. Subsequent signed-in orders receive 10% returning-customer pricing.</p>
       <div className="auth-form-links"><span>Already registered?</span><Link href="/account/sign-in">Sign in</Link></div>
